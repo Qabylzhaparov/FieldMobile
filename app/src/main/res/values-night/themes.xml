@@ -1,0 +1,9 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.CCCC" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Настройка цветовой схемы статус-бара -->
+        <item name="android:statusBarColor">@color/dark</item>
+        <!-- Если нужно, можно изменить и цвет навигационного бара -->
+        <item name="android:navigationBarColor">@color/dark</item>
+    </style>
+</resources>
