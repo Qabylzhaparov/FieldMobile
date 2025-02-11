@@ -42,6 +42,8 @@ android {
 dependencies {
     // Room
     implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     ksp(libs.androidx.room.compiler) // Используйте ksp вместо kapt для Room
     //    ksp("androidx.room:room-compiler:2.5.0") // Используйте ksp вместо kapt для Room
 
@@ -74,4 +76,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(kotlin("script-runtime"))
 }

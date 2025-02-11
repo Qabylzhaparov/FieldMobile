@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/baseline_panorama_wide_angle_select_24"
+        android:title="Home" />
+    <item
+        android:id="@+id/second"
+        android:icon="@drawable/baseline_panorama_wide_angle_select_24"
+        android:title="Second" />
+    <item
+        android:id="@+id/third"
+        android:icon="@drawable/baseline_panorama_wide_angle_select_24"
+        android:title="Third" />
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/baseline_panorama_wide_angle_select_24"
+        android:title="Profile" />
+</menu>
