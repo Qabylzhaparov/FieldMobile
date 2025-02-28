@@ -1,4 +1,4 @@
-package com.example.cccc.newfragment
+package com.example.cccc.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

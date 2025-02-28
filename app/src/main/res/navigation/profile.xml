@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.cccc.newfragment.ProfileFragment"
+        android:name="com.example.cccc.fragment.ProfileFragment"
         android:label="Profile" />
 
 </navigation>

@@ -1,4 +1,4 @@
-package com.example.cccc.newfragment
+package com.example.cccc.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,6 +26,11 @@ class CoursesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupRecyclerView()
+        setupFilterButton()
+    }
+
+    private fun setupRecyclerView() {
         courseAdapter = CourseAdapter { course ->
             // Здесь можно обработать нажатие на курс
         }
@@ -37,5 +42,14 @@ class CoursesFragment : Fragment() {
 
         // Загружаем курсы из репозитория
         courseAdapter.submitList(CourseRepository.getCourses())
+    }
+
+    private fun setupFilterButton() {
+        binding.ivFilter.setOnClickListener {
+            SearchFilterFragment.newInstance().show(
+                childFragmentManager,
+                SearchFilterFragment.TAG
+            )
+        }
     }
 }

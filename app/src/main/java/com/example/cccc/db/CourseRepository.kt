@@ -12,7 +12,7 @@ object CourseRepository {
                 name = "Kotlin для начинающих",
                 slug = "kotlin-beginners", 
                 description = "Изучение основ Kotlin с нуля",
-                imageUrl = "https://i.imgur.com/kotlin.png",
+                imageUrl = "https://upload.wikimedia.org/wikipedia/commons/7/74/Kotlin_Icon.png",
                 price = 19.99,
                 category = "Программирование",
                 videos = listOf(
@@ -28,7 +28,7 @@ object CourseRepository {
                 name = "Основы Android",
                 slug = "android-basics",
                 description = "Как создавать мобильные приложения на Android",
-                imageUrl = "https://i.imgur.com/android.png",
+                imageUrl = "https://developer.android.com/static/images/brand/Android_Robot.png",
                 price = 29.99,
                 category = "Мобильная разработка",
                 videos = listOf(
@@ -44,7 +44,7 @@ object CourseRepository {
                 name = "Jetpack Compose с нуля",
                 slug = "jetpack-compose",
                 description = "Современная разработка UI в Android с помощью Jetpack Compose",
-                imageUrl = "https://i.imgur.com/compose.png",
+                imageUrl = "https://developer.android.com/images/brand/compose/compose-logo.svg",
                 price = 34.99,
                 category = "Мобильная разработка",
                 videos = listOf(
@@ -60,7 +60,7 @@ object CourseRepository {
                 name = "Spring Boot для начинающих",
                 slug = "spring-boot",
                 description = "Разработка серверных приложений с использованием Spring Boot",
-                imageUrl = "https://i.imgur.com/spring.png",
+                imageUrl = "https://spring.io/img/spring.svg",
                 price = 39.99,
                 category = "Backend-разработка",
                 videos = listOf(
@@ -76,7 +76,7 @@ object CourseRepository {
                 name = "Python для анализа данных",
                 slug = "python-data-analysis",
                 description = "Как анализировать данные с использованием Pandas и NumPy",
-                imageUrl = "https://i.imgur.com/python.png",
+                imageUrl = "https://www.python.org/static/community_logos/python-logo-generic.svg",
                 price = 24.99,
                 category = "Анализ данных",
                 videos = listOf(
@@ -92,7 +92,7 @@ object CourseRepository {
                 name = "Основы машинного обучения",
                 slug = "machine-learning",
                 description = "Как строить модели машинного обучения с Scikit-learn",
-                imageUrl = "https://i.imgur.com/ml.png",
+                imageUrl = "https://scikit-learn.org/stable/_static/scikit-learn-logo-small.png",
                 price = 49.99,
                 category = "Машинное обучение",
                 videos = listOf(
@@ -108,7 +108,7 @@ object CourseRepository {
                 name = "JavaScript для веб-разработки",
                 slug = "javascript-web-dev",
                 description = "Основы JavaScript и современной веб-разработки",
-                imageUrl = "https://i.imgur.com/js.png",
+                imageUrl = "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png",
                 price = 29.99,
                 category = "Веб-разработка",
                 videos = listOf(
@@ -124,7 +124,7 @@ object CourseRepository {
                 name = "React для профессионалов",
                 slug = "react-advanced",
                 description = "Продвинутые концепции разработки на React",
-                imageUrl = "https://i.imgur.com/react.png",
+                imageUrl = "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg",
                 price = 44.99,
                 category = "Веб-разработка",
                 videos = listOf(
@@ -140,7 +140,7 @@ object CourseRepository {
                 name = "Docker и Kubernetes",
                 slug = "docker-kubernetes",
                 description = "Контейнеризация и оркестрация приложений",
-                imageUrl = "https://i.imgur.com/docker.png",
+                imageUrl = "https://www.docker.com/sites/default/files/d8/2019-07/vertical-logo-monochromatic.png",
                 price = 54.99,
                 category = "DevOps",
                 videos = listOf(
@@ -156,7 +156,7 @@ object CourseRepository {
                 name = "Flutter разработка",
                 slug = "flutter-dev",
                 description = "Создание кроссплатформенных приложений с Flutter",
-                imageUrl = "https://i.imgur.com/flutter.png",
+                imageUrl = "https://storage.googleapis.com/cms-storage-bucket/6a07d8a62f4308d2b854.svg",
                 price = 39.99,
                 category = "Мобильная разработка",
                 videos = listOf(

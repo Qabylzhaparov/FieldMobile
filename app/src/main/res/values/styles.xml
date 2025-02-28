@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="RoundedImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <style name="FilterChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textColor">@color/chip_text_color</item>
+        <item name="chipBackgroundColor">@color/gray</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipStrokeColor">#E0E0E0</item>
+        <item name="android:textSize">14sp</item>
+        <item name="chipMinHeight">36dp</item>
+        <item name="chipStartPadding">12dp</item>
+        <item name="chipEndPadding">12dp</item>
+    </style>
+
+    <style name="CustomChipChoice" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:layout_height">36dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="chipBackgroundColor">@color/chip_background_state</item>
+        <item name="chipStrokeColor">#E0E0E0</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="checkedIconEnabled">false</item>
+        <item name="android:textColor">@color/chip_text_color</item>
+        <item name="chipMinHeight">36dp</item>
+        <item name="chipMinTouchTargetSize">36dp</item>
+        <item name="chipCornerRadius">8dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="rippleColor">#1A4C6FFF</item>
+        <item name="android:elevation">0dp</item>
+        <item name="chipEndPadding">12dp</item>
+        <item name="chipStartPadding">12dp</item>
+    </style>
+</resources> 
