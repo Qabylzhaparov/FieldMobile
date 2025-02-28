@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.cccc.databinding.ItemCourseBinding
 import com.example.cccc.entity.Course
 
@@ -34,9 +35,9 @@ class CourseAdapter(
             binding.courseName.text = course.name
             binding.courseCategory.text = course.category
             binding.coursePrice.text = "$${course.price}$"
-//            Glide.with(binding.root.context)
-//                .load(course.imageUrl)
-//                .into(binding.CourseImage)
+            Glide.with(binding.root.context)
+                .load(course.imageUrl)
+                .into(binding.courseImage)
         }
     }
 }
