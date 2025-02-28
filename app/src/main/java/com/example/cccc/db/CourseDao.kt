@@ -6,7 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.example.cccc.Course
+import com.example.cccc.entity.Course
 
 @Dao
 interface CourseDao {

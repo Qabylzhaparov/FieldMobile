@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cccc.Course
 import com.example.cccc.databinding.ItemCourseBinding
+import com.example.cccc.entity.Course
 
 class CourseAdapter(
     private val onCourseClick: (Course) -> Unit
@@ -31,7 +31,12 @@ class CourseAdapter(
         }
 
         fun bind(course: Course) {
-            binding.CourseName.text = course.name
+            binding.courseName.text = course.name
+            binding.courseCategory.text = course.category
+            binding.coursePrice.text = "$${course.price}$"
+//            Glide.with(binding.root.context)
+//                .load(course.imageUrl)
+//                .into(binding.CourseImage)
         }
     }
 }

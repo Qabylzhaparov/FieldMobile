@@ -2,7 +2,7 @@ package com.example.cccc.vm
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cccc.Course
+import com.example.cccc.entity.Course
 import kotlinx.coroutines.launch
 
 class CourseViewModel(private val repository: CourseRepository) : ViewModel() {

@@ -1,7 +1,7 @@
 package com.example.cccc.vm
 
 import androidx.lifecycle.LiveData
-import com.example.cccc.Course
+import com.example.cccc.entity.Course
 import com.example.cccc.db.CourseDao
 
 class CourseRepository(private val courseDao: CourseDao) {

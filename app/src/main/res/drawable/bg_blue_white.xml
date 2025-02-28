@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Синий верхний блок (25%) -->
+    <item android:gravity="top">
+        <shape android:shape="rectangle">
+            <solid android:color="#0000FF"/> <!-- Синий цвет -->
+            <size android:height="100dp"/> <!-- Высота фиксированная, можно изменить -->
+        </shape>
+    </item>
+
+    <!-- Белый нижний блок (75%) -->
+    <item android:gravity="bottom">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF"/>
+            <size android:height="400dp"/> <!-- Белый цвет -->
+        </shape>
+    </item>
+
+</layer-list>

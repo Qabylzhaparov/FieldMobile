@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp) // Добавлено KSP
+    id("kotlin-parcelize")
 }
 
 android {
@@ -40,12 +41,20 @@ android {
 }
 
 dependencies {
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.5.0")
+
     // Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.databinding.adapters)
     ksp(libs.androidx.room.compiler) // Используйте ksp вместо kapt для Room
-    //    ksp("androidx.room:room-compiler:2.5.0") // Используйте ksp вместо kapt для Room
+    //ksp("androidx.room:room-compiler:2.5.0") // Используйте ksp вместо kapt для Room
 
     // Room KTX для работы с корутинами
     implementation(libs.androidx.room.ktx) // Добавьте эту строку
@@ -58,10 +67,10 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1") // Убедитесь, что эта строка добавлена
 
     // Koin core
-//    implementation(libs.koin.android)
-//
-//    // Koin для ViewModel (если используете ViewModel с Koin)
-//    implementation(libs.koin.androidx.viewmodel)
+    // implementation(libs.koin.android)
+
+    // Koin для ViewModel (если используете ViewModel с Koin)
+    //implementation(libs.koin.androidx.viewmodel)
 
     // Dagger 2
     implementation("com.google.dagger:dagger:2.52")

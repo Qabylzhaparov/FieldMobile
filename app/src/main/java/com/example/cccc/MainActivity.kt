@@ -1,7 +1,9 @@
 package com.example.cccc
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
+import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -10,8 +12,6 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cccc.adapter.CourseAdapter
 import com.example.cccc.databinding.ActivityMainBinding
-import com.example.cccc.fragment.CourseCreateFragment
-import com.example.cccc.fragment.CourseDetailFragment
 import com.example.cccc.fragment.LoginFragment
 import com.example.cccc.vm.CourseRepository
 import com.example.cccc.vm.CourseViewModel
@@ -32,8 +32,6 @@ class MainActivity : AppCompatActivity(), LoginFragment.LoginListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Инициализация ViewModel и RecyclerView после логина
-        setupRecyclerViewAndViewModel()
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_container) as NavHostFragment
         val navController = navHostFragment.navController
@@ -42,47 +40,8 @@ class MainActivity : AppCompatActivity(), LoginFragment.LoginListener {
         bottomNavigationView.setupWithNavController(navController)
     }
 
-    // Метод для инициализации RecyclerView и ViewModel
-    private fun setupRecyclerViewAndViewModel() {
-        courseViewModel = ViewModelProvider(this, CourseViewModelFactory(courseRepository))[CourseViewModel::class.java]
 
-        adapter = CourseAdapter { course ->
-            val fragment = CourseDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable("Course", course)
-                }
-            }
-//            supportFragmentManager.beginTransaction()
-//                .replace(R.id.fragment_container, fragment)
-//                .addToBackStack(null)
-//                .commit()
-        }
-
-//        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-//        binding.recyclerView.adapter = adapter
-
-        courseViewModel.allCourses.observe(this, { courses ->
-            courses?.let { adapter.submitList(it) }
-        })
-
-//        binding.addCourseButton.setOnClickListener {
-//            val fragment = CourseCreateFragment()
-//            supportFragmentManager.beginTransaction()
-//                .replace(R.id.fragment_container, fragment)
-//                .addToBackStack(null)
-//                .commit()
-//        }
-    }
-
-
-    // Метод, который будет вызван из LoginFragment после успешного входа
     override fun onLoginSuccess() {
-//        supportFragmentManager.beginTransaction()
-//            .remove(supportFragmentManager.findFragmentById(R.id.fragment_container) as Fragment)
-//            .commit()
-//
-//        // Показываем основной контент после логина
-//        binding.recyclerView.visibility = View.VISIBLE
-//        binding.addCourseButton.visibility = View.VISIBLE
+        TODO()
     }
 }

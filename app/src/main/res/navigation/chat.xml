@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/thirdFragment"
-        android:name="com.example.cccc.newfragment.ThirdFragment"
+        android:name="com.example.cccc.newfragment.ChatFragment"
         android:label="Third" />
 
 </navigation>
