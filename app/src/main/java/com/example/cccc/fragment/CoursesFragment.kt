@@ -5,10 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.cccc.R
 import com.example.cccc.adapter.CourseAdapter
 import com.example.cccc.databinding.FragmentCoursesBinding
 import com.example.cccc.db.CourseRepository
+import com.example.cccc.entity.Course
 
 class CoursesFragment : Fragment() {
 
@@ -32,7 +35,8 @@ class CoursesFragment : Fragment() {
 
     private fun setupRecyclerView() {
         courseAdapter = CourseAdapter { course ->
-            // Здесь можно обработать нажатие на курс
+            // Открываем детали курса при клике
+            openCourseDetails(course)
         }
 
         binding.recyclerViewCourses.apply {
@@ -51,5 +55,12 @@ class CoursesFragment : Fragment() {
                 SearchFilterFragment.TAG
             )
         }
+    }
+
+    private fun openCourseDetails(course: Course) {
+        val bundle = Bundle().apply {
+            putParcelable("course", course)
+        }
+        findNavController().navigate(R.id.action_courses_to_courseDetails, bundle)
     }
 }

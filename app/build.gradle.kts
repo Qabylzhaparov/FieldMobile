@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp) // Добавлено KSP
     id("kotlin-parcelize")
+//    id("androidx.navigation.safeargs.kotlin") // Подключаем Safe Args
 }
 
 android {
@@ -41,6 +42,10 @@ android {
 }
 
 dependencies {
+    // Safe Args
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
+
     // Glide
     implementation("com.github.bumptech.glide:glide:4.12.0")
 

@@ -1,9 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+    <group
+        android:scaleX="0.45"
+        android:scaleY="0.45"
+        android:translateX="29.7"
+        android:translateY="29.7">
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M86.4,35.2c-0.2,-0.6 -0.7,-1 -1.3,-1.2l-25.8,-7.5c-0.2,-0.1 -0.5,-0.1 -0.7,0L32.9,34c-0.6,0.2 -1.1,0.7 -1.3,1.2c-0.2,0.6 -0.1,1.2 0.2,1.7l25.8,35.8c0.3,0.5 0.9,0.7 1.5,0.7s1.1,-0.3 1.5,-0.7l25.8,-35.8C86.5,36.4 86.6,35.8 86.4,35.2zM58.5,31.2l19.9,5.8L58.5,68.8L38.6,37l19.9,-5.8zM47.5,47.5c0,-6.1 4.9,-11 11,-11s11,4.9 11,11s-4.9,11 -11,11S47.5,53.6 47.5,47.5zM58.5,52.5c2.8,0 5,-2.2 5,-5s-2.2,-5 -5,-5s-5,2.2 -5,5S55.7,52.5 58.5,52.5z"/>
+    </group>
     <path android:pathData="M31,63.928c0,0 6.4,-11 12.1,-13.1c7.2,-2.6 26,-1.4 26,-1.4l38.1,38.1L107,108.928l-32,-1L31,63.928z">
         <aapt:attr name="android:fillColor">
             <gradient
