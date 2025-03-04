@@ -6,7 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.example.cccc.R
 import com.example.cccc.adapter.LessonsAdapter
 import com.example.cccc.databinding.FragmentCourseDetailsBinding
 import com.example.cccc.entity.Course
@@ -67,7 +70,13 @@ class CourseDetailsFragment : Fragment() {
             if (lesson.isLocked) {
                 showToast("This lesson is locked. Please purchase the course to unlock.")
             } else {
-                showToast("Playing: ${lesson.title}")
+                // Находим видео по id урока
+                course?.videos?.find { it.id == lesson.id }?.let { video ->
+                    val bundle = Bundle().apply {
+                        putParcelable("video", video)
+                    }
+                    findNavController().navigate(R.id.action_courseDetails_to_lessonDetails, bundle)
+                }
             }
         }
         binding.lessonsRecyclerView.adapter = lessonsAdapter

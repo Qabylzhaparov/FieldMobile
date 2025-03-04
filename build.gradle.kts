@@ -6,3 +6,9 @@ plugins {
 //    id("androidx.navigation.safeargs.kotlin")
 }
 // version "1.9.20"
+
+buildscript {
+    dependencies {
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.5")
+    }
+}

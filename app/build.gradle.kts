@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp) // Добавлено KSP
     id("kotlin-parcelize")
-//    id("androidx.navigation.safeargs.kotlin") // Подключаем Safe Args
+    id("androidx.navigation.safeargs.kotlin") // Включаем Safe Args
 }
 
 android {
@@ -91,4 +91,8 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(kotlin("script-runtime"))
+
+    // ExoPlayer
+    implementation("com.google.android.exoplayer:exoplayer-core:2.19.1")
+    implementation("com.google.android.exoplayer:exoplayer-ui:2.19.1")
 }

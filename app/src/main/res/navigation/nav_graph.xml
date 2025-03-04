@@ -29,6 +29,19 @@
         <argument
             android:name="course"
             app:argType="com.example.cccc.entity.Course" />
+        <action
+            android:id="@+id/action_courseDetails_to_lessonDetails"
+            app:destination="@id/lessonDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/lessonDetailsFragment"
+        android:name="com.example.cccc.fragment.LessonDetailsFragment"
+        android:label="Lesson Details"
+        tools:layout="@layout/fragment_lesson_details">
+        <argument
+            android:name="video"
+            app:argType="com.example.cccc.entity.Video" />
     </fragment>
 
     <fragment
