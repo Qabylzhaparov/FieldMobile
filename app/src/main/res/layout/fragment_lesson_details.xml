@@ -33,6 +33,17 @@
             app:layout_constraintTop_toBottomOf="@id/videoPlayer"
             tools:text="Lesson Title" />
 
+        <!-- Progress Bar -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="16dp"
+            android:progress="0"
+            app:layout_constraintTop_toBottomOf="@id/lessonTitle" />
+
         <!-- Test Section -->
         <TextView
             android:id="@+id/testTitle"
@@ -44,7 +55,20 @@
             android:textColor="#212121"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/lessonTitle" />
+            app:layout_constraintTop_toBottomOf="@id/progressBar" />
+
+        <!-- Question Counter -->
+        <TextView
+            android:id="@+id/questionCounter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="#757575"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/testTitle"
+            tools:text="Question 1 of 5" />
 
         <!-- Question -->
         <TextView
@@ -55,7 +79,7 @@
             android:layout_marginTop="16dp"
             android:textColor="#212121"
             android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@id/testTitle"
+            app:layout_constraintTop_toBottomOf="@id/questionCounter"
             tools:text="What is the main purpose of this lesson?" />
 
         <!-- Answer Options -->
@@ -108,18 +132,85 @@
 
         </RadioGroup>
 
-        <!-- Submit Button -->
-        <Button
-            android:id="@+id/submitButton"
+        <!-- Navigation Buttons -->
+        <LinearLayout
+            android:id="@+id/navigationButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="24dp"
-            android:backgroundTint="#4C6FFF"
-            android:padding="16dp"
-            android:text="Submit Answer"
-            android:textColor="#FFFFFF"
-            app:layout_constraintTop_toBottomOf="@id/answerOptions" />
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/answerOptions">
+
+            <Button
+                android:id="@+id/previousButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="#F5F5F5"
+                android:text="Previous"
+                android:textColor="#757575" />
+
+            <Button
+                android:id="@+id/nextButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="#4C6FFF"
+                android:text="Next"
+                android:textColor="#FFFFFF" />
+
+        </LinearLayout>
+
+        <!-- Results Section -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/resultsSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/navigationButtons">
+
+            <TextView
+                android:id="@+id/resultsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:text="Test Results"
+                android:textColor="#212121"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/scoreText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textColor="#4C6FFF"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/resultsTitle"
+                tools:text="4/5" />
+
+            <TextView
+                android:id="@+id/scoreDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="#757575"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/scoreText"
+                tools:text="Great job! You've passed the test!" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

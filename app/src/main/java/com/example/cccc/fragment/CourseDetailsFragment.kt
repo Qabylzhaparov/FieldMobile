@@ -37,7 +37,6 @@ class CourseDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
-        // Получаем курс из аргументов
         course = arguments?.getParcelable(ARG_COURSE)
         
         setupRecyclerView()
@@ -48,18 +47,15 @@ class CourseDetailsFragment : Fragment() {
     private fun displayCourseInfo() {
         course?.let { course ->
             with(binding) {
-                // Загружаем изображение курса
                 Glide.with(requireContext())
                     .load(course.imageUrl)
                     .into(courseImage)
 
-                // Устанавливаем информацию о курсе
                 courseTitle.text = course.name
                 coursePrice.text = "$${course.price}"
                 courseDuration.text = "${course.videos.size} lessons"
                 aboutDescription.text = course.description
 
-                // Загружаем видео курса
                 loadLessons(course.videos)
             }
         }
@@ -70,7 +66,6 @@ class CourseDetailsFragment : Fragment() {
             if (lesson.isLocked) {
                 showToast("This lesson is locked. Please purchase the course to unlock.")
             } else {
-                // Находим видео по id урока
                 course?.videos?.find { it.id == lesson.id }?.let { video ->
                     val bundle = Bundle().apply {
                         putParcelable("video", video)
@@ -84,12 +79,10 @@ class CourseDetailsFragment : Fragment() {
 
     private fun setupClickListeners() {
         with(binding) {
-            // Buy button click listener
             buyButton.setOnClickListener {
                 showToast("Processing purchase...")
             }
 
-            // Favorite button click listener
             favoriteButton.setOnClickListener {
                 isFavorite = !isFavorite
                 favoriteButton.setColorFilter(
@@ -106,8 +99,8 @@ class CourseDetailsFragment : Fragment() {
                 id = video.id,
                 number = String.format("%02d", index + 1),
                 title = video.title,
-                duration = "10:00", // Здесь можно добавить реальную длительность видео
-                isLocked = index > 2 // Первые 3 видео доступны бесплатно
+                duration = "10:00",
+                isLocked = index > 2
             )
         }
         lessonsAdapter.setLessons(lessons)
