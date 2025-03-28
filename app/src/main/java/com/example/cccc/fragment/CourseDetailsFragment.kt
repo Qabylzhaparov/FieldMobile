@@ -1,6 +1,10 @@
 package com.example.cccc.fragment
 
+import android.content.Context
+import android.graphics.*
+import android.media.MediaScannerConnection
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,14 +15,20 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.cccc.R
 import com.example.cccc.adapter.LessonAdapter
+import com.example.cccc.databinding.DialogCertificateBinding
 import com.example.cccc.databinding.FragmentCourseDetailsBinding
 import com.example.cccc.entity.Course
 import com.example.cccc.entity.Video
 import com.example.cccc.model.Lesson
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.io.File
+import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CourseDetailsFragment : Fragment() {
 
@@ -55,6 +65,7 @@ class CourseDetailsFragment : Fragment() {
         setupRecyclerView()
         loadCourseProgress()
         updateUI()
+        setupClickListeners()
     }
 
     private fun setupToolbar() {
@@ -122,7 +133,7 @@ class CourseDetailsFragment : Fragment() {
         binding.progressIndicator.progress = progress.toInt()
         binding.progressText.text = "${progress.toInt()}%"
         binding.progressDescription.text = "$completedLessons of $totalLessons lessons completed"
-        
+
         binding.getCertificateButton.visibility = if (progress >= 100) View.VISIBLE else View.GONE
     }
 
@@ -152,8 +163,117 @@ class CourseDetailsFragment : Fragment() {
                 )
                 showToast(if (isFavorite) "Added to favorites" else "Removed from favorites")
             }
+
+            getCertificateButton.setOnClickListener {
+                showCertificateDialog()
+            }
         }
     }
+
+    private fun showCertificateDialog() {
+        val dialogBinding = DialogCertificateBinding.inflate(layoutInflater)
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
+
+        // Генерируем сертификат
+        val certificateBitmap = generateCertificate()
+        dialogBinding.certificateImage.setImageBitmap(certificateBitmap)
+
+        // Настраиваем кнопки
+        dialogBinding.downloadButton.setOnClickListener {
+            saveCertificate(certificateBitmap)
+        }
+
+//        dialogBinding.shareButton.setOnClickListener {
+//            shareCertificate(certificateBitmap)
+//        }
+
+        dialog.show()
+    }
+
+    private fun generateCertificate(): Bitmap {
+        val width = 1200
+        val height = 800
+
+        // Загружаем шаблон сертификата из ресурсов
+        val background = BitmapFactory.decodeResource(resources, R.drawable.cerf_template3)
+        val scaledBackground = Bitmap.createScaledBitmap(background, width, height, true)
+
+        // Создаем новый Bitmap и Canvas для рисования
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+
+        // Рисуем фон (шаблон сертификата)
+        canvas.drawBitmap(scaledBackground, 0f, 0f, null)
+
+        // Настраиваем текст
+        val textPaint = Paint().apply {
+            color = Color.BLACK
+            textSize = 48f
+            isAntiAlias = true
+            typeface = Typeface.create(Typeface.DEFAULT_BOLD, Typeface.BOLD)
+        }
+
+        // Рисуем заголовок
+        val title = "Certificate of Completion"
+        val titleWidth = textPaint.measureText(title)
+        canvas.drawText(title, (width - titleWidth) / 2, 270f, textPaint) // Было 200f, стало 250f
+
+        // Рисуем имя пользователя
+        textPaint.textSize = 36f
+        val userName = auth.currentUser?.displayName ?: "Student"
+        val userNameWidth = textPaint.measureText(userName)
+        canvas.drawText(userName, (width - userNameWidth) / 2, 350f, textPaint) // Было 300f, стало 350f
+
+        // Рисуем текст о завершении курса
+        textPaint.textSize = 24f
+        val courseText = "has successfully completed the course"
+        val courseTextWidth = textPaint.measureText(courseText)
+        canvas.drawText(courseText, (width - courseTextWidth) / 2, 400f, textPaint) // Было 350f, стало 400f
+
+        // Рисуем название курса
+        textPaint.textSize = 32f
+        val courseNameWidth = textPaint.measureText(course.name)
+        canvas.drawText(course.name, (width - courseNameWidth) / 2, 450f, textPaint) // Было 400f, стало 450f
+
+        // Рисуем дату
+        textPaint.textSize = 20f
+        val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault())
+        val date = dateFormat.format(Date())
+        val dateWidth = textPaint.measureText(date)
+        canvas.drawText(date, (width - dateWidth) / 2, 550f, textPaint) // Было 500f, стало 550f
+
+        return bitmap
+    }
+
+
+
+    private fun saveCertificate(bitmap: Bitmap) {
+        try {
+            val fileName = "certificate_${course.name.replace(" ", "_")}_${System.currentTimeMillis()}.png"
+            val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            val file = File(downloadsDir, fileName)
+
+            FileOutputStream(file).use { out ->
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+            }
+
+            showToast("Certificate saved to Downloads")
+
+            // Обновляем медиа-хранилище, чтобы файл сразу появился в галерее
+            MediaScannerConnection.scanFile(
+                requireContext(),
+                arrayOf(file.absolutePath),
+                arrayOf("image/png"),
+                null
+            )
+
+        } catch (e: Exception) {
+            showToast("Failed to save certificate: ${e.message}")
+        }
+    }
+
 
     fun onLessonCompleted(lessonId: String?) {
         // Проверяем, не был ли урок уже завершен

@@ -212,7 +212,7 @@
                 android:layout_marginTop="16dp"
                 android:text="Get Certificate"
                 android:textAllCaps="false"
-                android:visibility="gone"
+                android:backgroundTint="@color/blue"
                 app:cornerRadius="8dp"/>
 
         </LinearLayout>
