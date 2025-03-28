@@ -44,4 +44,9 @@ class MainActivity : AppCompatActivity(), LoginFragment.LoginListener {
         navController.navigate(R.id.action_loginFragment_to_homeFragment)
         binding.bottomNavigationView.visibility = View.VISIBLE
     }
+
+    fun setBottomNavVisibility(isVisible: Boolean) {
+        binding.bottomNavigationView.visibility = if (isVisible) View.VISIBLE else View.GONE
+    }
+
 }

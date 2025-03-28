@@ -174,7 +174,7 @@
                 android:id="@+id/googleLoginButton"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:background="@drawable/circle_background"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_google" />
 

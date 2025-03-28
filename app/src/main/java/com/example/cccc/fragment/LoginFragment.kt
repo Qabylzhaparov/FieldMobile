@@ -63,7 +63,7 @@ class LoginFragment : Fragment() {
         // Проверяем, залогинен ли пользователь
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            Toast.makeText(context, "Already logged in as: ${currentUser.email}", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context, "Already logged in as: ${currentUser.email}", Toast.LENGTH_SHORT).show()
             onLoginSuccess()
         }
 

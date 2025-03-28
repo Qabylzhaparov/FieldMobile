@@ -79,7 +79,30 @@
         android:id="@+id/profileFragment"
         android:name="com.example.cccc.fragment.ProfileFragment"
         android:label="Profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_profileFragment_to_notificationsFragment"
+            app:destination="@id/notificationsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.example.cccc.fragment.NotificationsFragment"
+        android:label="NotificationsFragment" />
+
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.example.cccc.fragment.EditProfileFragment"
+        android:label="EditProfileFragment" />"
 
     <fragment
         android:id="@+id/chatFragment"
