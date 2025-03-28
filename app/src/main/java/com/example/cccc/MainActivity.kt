@@ -38,8 +38,10 @@ class MainActivity : AppCompatActivity(), LoginFragment.LoginListener {
         binding.bottomNavigationView.setupWithNavController(navController)
     }
 
-
     override fun onLoginSuccess() {
-        TODO()
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        navController.navigate(R.id.action_loginFragment_to_homeFragment)
+        binding.bottomNavigationView.visibility = View.VISIBLE
     }
 }

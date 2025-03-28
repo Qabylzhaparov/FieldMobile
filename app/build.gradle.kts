@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.ksp) // Добавлено KSP
     id("kotlin-parcelize")
     id("androidx.navigation.safeargs.kotlin") // Включаем Safe Args
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -99,4 +100,10 @@ dependencies {
     // ExoPlayer
     implementation("com.google.android.exoplayer:exoplayer-core:2.19.1")
     implementation("com.google.android.exoplayer:exoplayer-ui:2.19.1")
+
+    // Firebase Auth
+    implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("com.google.firebase:firebase-analytics")
 }

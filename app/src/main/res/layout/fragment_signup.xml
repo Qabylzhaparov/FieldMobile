@@ -16,11 +16,10 @@
             android:layout_height="160dp"
             android:background="@color/gray">
 
-            <!-- "Log In" внутри серого фона внизу слева -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Log In"
+                android:text="Sign Up"
                 android:textSize="30dp"
                 android:fontFamily="@font/poppins_medium"
                 android:textStyle="bold"
@@ -30,30 +29,40 @@
                 android:layout_marginBottom="24dp"/>
         </FrameLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:hint="Your Email"
-        android:paddingHorizontal="24dp"
-        app:boxBackgroundColor="@color/white"
-        app:boxCornerRadiusTopStart="16dp"
-        app:boxCornerRadiusTopEnd="16dp"
-        app:boxCornerRadiusBottomStart="16dp"
-        app:boxCornerRadiusBottomEnd="16dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/emailInput"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:textSize="16sp"
-            android:fontFamily="@font/poppins_regular"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray"/>
+            android:layout_marginTop="8dp"
+            android:paddingHorizontal="24dp"
+            android:text="Please review Terms &amp; first sign up"
+            android:textColor="#757575"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_regular"/>
 
-    </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:hint="Your Email"
+            android:paddingHorizontal="24dp"
+            app:boxBackgroundColor="@color/white"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusBottomEnd="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -81,27 +90,37 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-
-        <TextView
-            android:paddingHorizontal="24dp"
-            android:id="@+id/forgotPasswordText"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:fontFamily="@font/poppins_regular"
-            android:layout_marginTop="8dp"
-            android:text="Forget password?"
-            android:textColor="#646464"/>
+            android:layout_marginTop="16dp"
+            android:paddingHorizontal="24dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <CheckBox
+                android:id="@+id/termsCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="By creating an account you have to agree with our Terms &amp; condition"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_regular"/>
+
+        </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/loginButton"
+            android:id="@+id/createAccountButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="24dp"
             android:layout_marginHorizontal="24dp"
             android:paddingVertical="12dp"
-            android:text="Log in"
+            android:text="Create account"
             android:textSize="16dp"
             app:cornerRadius="12dp"
             android:backgroundTint="@color/blue"
@@ -119,13 +138,13 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
                 android:textSize="12dp"
-                android:text="Don't have an account? "/>
+                android:text="Already have an account? "/>
 
             <TextView
-                android:id="@+id/signUpText"
+                android:id="@+id/loginLink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sign up"
+                android:text="Log in"
                 android:fontFamily="@font/poppins_regular"
                 android:textSize="12dp"
                 android:textColor="@color/blue"/>
@@ -151,7 +170,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="Or login with"
+                android:text="Or sign up with"
                 android:textSize="12dp"
                 android:textColor="@color/black"/>
 
@@ -163,7 +182,6 @@
 
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -171,14 +189,13 @@
             android:gravity="center">
 
             <ImageButton
-                android:id="@+id/googleLoginButton"
+                android:id="@+id/googleSignUpButton"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_google" />
 
-
         </LinearLayout>
     </LinearLayout>
-</ScrollView>
+</ScrollView> 

@@ -36,15 +36,10 @@ object CourseRepository {
                 price = 29.99,
                 category = "Мобильная разработка",
                 videos = listOf(
-                    Video(id = 7, course = 2, title = "Activity и фрагменты", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
-                    Video(id = 8, course = 2, title = "Работа с UI", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
-                    Video(id = 9, course = 2, title = "Жизненный цикл Activity", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
-                    Video(id = 10, course = 2, title = "Intent и навигация", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
-                    Video(id = 11, course = 2, title = "Работа с ресурсами", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
-                    Video(id = 12, course = 2, title = "Сохранение данных", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U")
+                    Video(id = 7, course = 2, title = "Activity и фрагменты", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U")
                 ),
                 tests = listOf(
-                    Test(id = 2, question = "Что такое Activity?", options = listOf("Класс", "Файл", "Метод"), correctAnswer = 0)
+                    Test(id = 2, question = "Что такое Activity?", options = listOf("Класс", "Файл", "Метод"), correctAnswer = 1)
                 )
             ),
             Course(
