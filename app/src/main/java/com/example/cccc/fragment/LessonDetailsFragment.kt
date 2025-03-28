@@ -7,12 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.cccc.databinding.FragmentLessonDetailsBinding
 import com.example.cccc.entity.Video
 import com.example.cccc.model.Test
 import com.example.cccc.model.TestRepository
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ui.PlayerView
 
 class LessonDetailsFragment : Fragment() {
 
@@ -20,8 +23,10 @@ class LessonDetailsFragment : Fragment() {
     private val binding get() = _binding!!
     
     private var player: ExoPlayer? = null
-    private var video: Video? = null
+    private lateinit var video: Video
     private var test: Test? = null
+    private var lessonId: String? = null
+    private var isLessonCompleted = false
     
     private var currentQuestionIndex = 0
     private val answers = mutableListOf<Int>()
@@ -38,20 +43,52 @@ class LessonDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
-        // Получаем видео из аргументов
-        video = arguments?.getParcelable("video")
+        video = arguments?.getParcelable("video") ?: throw IllegalStateException("Video is required")
+        lessonId = arguments?.getString("lessonId")
         
         // Получаем тест для текущего урока
-        video?.let { video ->
-            Log.d("LessonDetailsFragment", "Video ID: ${video.id}")
-            Log.d("LessonDetailsFragment", "Video Title: ${video.title}")
-            test = TestRepository.getTestForLesson(video.id.toString()) // Используем ID видео напрямую
-            Log.d("LessonDetailsFragment", "Test found: ${test != null}")
-            setupTestSection()
+        test = TestRepository.getTestForLesson(video.id.toString())
+        
+        setupToolbar()
+        setupPlayer()
+        setupTestSection()
+        updateUI()
+
+        binding.backButton.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
+    }
+
+    private fun setupToolbar() {
+        binding.toolbar.setNavigationOnClickListener {
+            if (!isLessonCompleted) {
+                // Если урок не завершен, показываем диалог подтверждения
+                showExitConfirmationDialog()
+            } else {
+                // Если урок завершен, просто возвращаемся назад
+                findNavController().navigateUp()
+            }
+        }
+    }
+
+    private fun setupPlayer() {
+        player = ExoPlayer.Builder(requireContext()).build().apply {
+            setMediaItem(MediaItem.fromUri(video.url))
+            prepare()
+            
+            // Добавляем слушатель для отслеживания завершения видео
+            addListener(object : Player.Listener {
+                override fun onPlaybackStateChanged(state: Int) {
+                    if (state == Player.STATE_ENDED) {
+                        // Видео завершено
+                        onVideoCompleted()
+                    }
+                }
+            })
         }
         
-        setupVideoPlayer()
-        updateUI()
+        binding.playerView.player = player
     }
 
     private fun setupTestSection() {
@@ -78,19 +115,6 @@ class LessonDetailsFragment : Fragment() {
                 
                 Toast.makeText(requireContext(), "Test is not available for this lesson", Toast.LENGTH_SHORT).show()
             }
-        }
-    }
-
-    private fun setupVideoPlayer() {
-        video?.let { video ->
-            binding.lessonTitle.text = video.title
-            
-            player = ExoPlayer.Builder(requireContext()).build().apply {
-                setMediaItem(MediaItem.fromUri(video.url))
-                prepare()
-            }
-            
-            binding.videoPlayer.player = player
         }
     }
 
@@ -137,7 +161,19 @@ class LessonDetailsFragment : Fragment() {
         }
     }
 
+    private fun onVideoCompleted() {
+        isLessonCompleted = true
+        // Уведомляем родительский фрагмент о завершении урока
+        (parentFragment as? CourseDetailsFragment)?.onLessonCompleted(lessonId)
+        
+        // Показываем сообщение о завершении
+        binding.completionMessage.visibility = View.VISIBLE
+        binding.completionMessage.text = "Lesson completed! You can now exit."
+    }
+
     private fun updateUI() {
+        binding.videoTitle.text = video.title
+        
         test?.let { test ->
             with(binding) {
                 // Обновляем прогресс
@@ -198,6 +234,17 @@ class LessonDetailsFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun showExitConfirmationDialog() {
+        androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            .setTitle("Exit Lesson")
+            .setMessage("Are you sure you want to exit? Your progress will not be saved.")
+            .setPositiveButton("Exit") { _, _ ->
+                findNavController().navigateUp()
+            }
+            .setNegativeButton("Continue", null)
+            .show()
     }
 
     override fun onDestroyView() {

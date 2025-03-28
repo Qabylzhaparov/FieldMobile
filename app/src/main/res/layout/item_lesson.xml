@@ -1,54 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
-    android:clickable="true"
-    android:focusable="true"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingVertical="16dp">
+    android:background="@drawable/bg_lesson_item"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/lessonIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_play"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="#4C6FFF" />
 
     <TextView
         android:id="@+id/lessonNumber"
-        android:layout_width="24dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="01"
-        android:textColor="#BDBDBD"
-        android:textSize="14sp" />
+        android:layout_marginStart="16dp"
+        android:text="Lesson 1"
+        android:textColor="#757575"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/lessonTitle"
+        app:layout_constraintStart_toEndOf="@id/lessonIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/lessonTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:layout_marginTop="4dp"
+        android:text="Introduction to Product Design"
+        android:textColor="#1F1F1F"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/lessonDuration"
+        app:layout_constraintStart_toEndOf="@id/lessonIcon"
+        app:layout_constraintTop_toBottomOf="@id/lessonNumber" />
 
-        <TextView
-            android:id="@+id/lessonTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Welcome to the Course"
-            android:textColor="#1F1F1F"
-            android:textSize="16sp" />
+    <TextView
+        android:id="@+id/lessonDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2:30"
+        android:textColor="#757575"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/lessonTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/lessonTitle" />
 
-        <TextView
-            android:id="@+id/lessonDuration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="6:10 mins"
-            android:textColor="#757575"
-            android:textSize="14sp" />
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/lessonStatus"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
-        android:src="@drawable/ic_play"
-        app:tint="#4C6FFF" />
-
-</LinearLayout> 
+</androidx.constraintlayout.widget.ConstraintLayout> 

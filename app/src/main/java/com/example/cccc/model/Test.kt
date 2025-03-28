@@ -76,6 +76,29 @@ object TestRepository {
                 )
             )
         ),
+
+        "4" to Test(
+            id = "test_4",
+            lessonId = "4",
+            questions = listOf(
+                Question(
+                    "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
+                    listOf("Theory", "Practice", "Both", "Neither"),
+                    0
+                )
+            )
+        ),
+        "7" to Test(
+            id = "test_4",
+            lessonId = "4",
+            questions = listOf(
+                Question(
+                    "OOOOOOOOOOIIIIIIIIIIIIOO",
+                    listOf("Theory", "Practice", "Both", "Neither"),
+                    0
+                )
+            )
+        ),
         "3" to Test(
             id = "test_3",
             lessonId = "3",

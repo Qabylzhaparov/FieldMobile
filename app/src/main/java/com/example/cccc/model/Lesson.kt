@@ -1,9 +1,10 @@
 package com.example.cccc.model
 
 data class Lesson(
-    val id: Int,
-    val number: String,
+    val id: String,
+    val number: Int,
     val title: String,
     val duration: String,
-    val isLocked: Boolean = false
-) 
+    val isLocked: Boolean,
+    val videoUrl: String
+)
