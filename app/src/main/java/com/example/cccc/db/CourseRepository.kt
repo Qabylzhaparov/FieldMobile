@@ -32,7 +32,7 @@ object CourseRepository {
                 name = "Основы Android",
                 slug = "android-basics",
                 description = "Как создавать мобильные приложения на Android",
-                imageUrl = "https://developer.android.com/static/images/brand/Android_Robot.png",
+                imageUrl = "https://logowik.com/content/uploads/images/t_android-studio5850.logowik.com.webp",
                 price = 29.99,
                 category = "Мобильная разработка",
                 videos = listOf(
@@ -47,7 +47,7 @@ object CourseRepository {
                 name = "Jetpack Compose с нуля",
                 slug = "jetpack-compose",
                 description = "Современная разработка UI в Android с помощью Jetpack Compose",
-                imageUrl = "https://developer.android.com/images/brand/compose/compose-logo.svg",
+                imageUrl = " ",
                 price = 34.99,
                 category = "Мобильная разработка",
                 videos = listOf(
@@ -67,7 +67,7 @@ object CourseRepository {
                 name = "Spring Boot для начинающих",
                 slug = "spring-boot",
                 description = "Разработка серверных приложений с использованием Spring Boot",
-                imageUrl = "https://spring.io/img/spring.svg",
+                imageUrl = "https://logowik.com/content/uploads/images/spring-java7947.logowik.com.webp",
                 price = 39.99,
                 category = "Backend-разработка",
                 videos = listOf(
@@ -87,7 +87,7 @@ object CourseRepository {
                 name = "Python для анализа данных",
                 slug = "python-data-analysis",
                 description = "Как анализировать данные с использованием Pandas и NumPy",
-                imageUrl = "https://www.python.org/static/community_logos/python-logo-generic.svg",
+                imageUrl = "https://logowik.com/content/uploads/images/python4089.logowik.com.webp",
                 price = 24.99,
                 category = "Анализ данных",
                 videos = listOf(
@@ -107,7 +107,7 @@ object CourseRepository {
                 name = "Основы машинного обучения",
                 slug = "machine-learning",
                 description = "Как строить модели машинного обучения с Scikit-learn",
-                imageUrl = "https://scikit-learn.org/stable/_static/scikit-learn-logo-small.png",
+                imageUrl = "https://logowik.com/content/uploads/images/azure-machine-learning-service1395.jpg",
                 price = 49.99,
                 category = "Машинное обучение",
                 videos = listOf(
@@ -147,7 +147,7 @@ object CourseRepository {
                 name = "React для профессионалов",
                 slug = "react-advanced",
                 description = "Продвинутые концепции разработки на React",
-                imageUrl = "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg",
+                imageUrl = "https://logowik.com/content/uploads/images/react7473.logowik.com.webp",
                 price = 44.99,
                 category = "Веб-разработка",
                 videos = listOf(
@@ -167,7 +167,7 @@ object CourseRepository {
                 name = "Docker и Kubernetes",
                 slug = "docker-kubernetes",
                 description = "Контейнеризация и оркестрация приложений",
-                imageUrl = "https://www.docker.com/sites/default/files/d8/2019-07/vertical-logo-monochromatic.png",
+                imageUrl = "https://logowik.com/content/uploads/images/t_301_docker.jpg",
                 price = 54.99,
                 category = "DevOps",
                 videos = listOf(
@@ -187,7 +187,7 @@ object CourseRepository {
                 name = "Flutter разработка",
                 slug = "flutter-dev",
                 description = "Создание кроссплатформенных приложений с Flutter",
-                imageUrl = "https://storage.googleapis.com/cms-storage-bucket/6a07d8a62f4308d2b854.svg",
+                imageUrl = "https://logowik.com/content/uploads/images/t_flutter5786.jpg",
                 price = 39.99,
                 category = "Мобильная разработка",
                 videos = listOf(

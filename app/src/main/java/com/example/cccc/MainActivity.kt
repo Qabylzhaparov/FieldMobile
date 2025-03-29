@@ -1,21 +1,17 @@
 package com.example.cccc
 
-import android.graphics.Rect
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
-import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cccc.adapter.CourseAdapter
 import com.example.cccc.databinding.ActivityMainBinding
 import com.example.cccc.fragment.LoginFragment
 import com.example.cccc.vm.CourseRepository
 import com.example.cccc.vm.CourseViewModel
-import com.example.cccc.vm.CourseViewModelFactory
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), LoginFragment.LoginListener {
@@ -29,8 +25,15 @@ class MainActivity : AppCompatActivity(), LoginFragment.LoginListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as MyApp).appComponent.inject(this)
         super.onCreate(savedInstanceState)
+        
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        
+        // Делаем ActionBar прозрачным
+        supportActionBar?.apply {
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            elevation = 0f
+        }
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
@@ -48,5 +51,4 @@ class MainActivity : AppCompatActivity(), LoginFragment.LoginListener {
     fun setBottomNavVisibility(isVisible: Boolean) {
         binding.bottomNavigationView.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
-
 }

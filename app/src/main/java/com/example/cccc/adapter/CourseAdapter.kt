@@ -46,6 +46,30 @@ class CourseAdapter(
             Glide.with(binding.root.context)
                 .load(course.imageUrl)
                 .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder)
+                .listener(object : RequestListener<android.graphics.drawable.Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<android.graphics.drawable.Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        Log.e("CourseAdapter", "Failed to load image for course ${course.name}", e)
+                        return false
+                    }
+
+                    override fun onResourceReady(
+                        resource: android.graphics.drawable.Drawable,
+                        model: Any?,
+                        target: Target<android.graphics.drawable.Drawable>?,
+                        dataSource: com.bumptech.glide.load.DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        Log.d("CourseAdapter", "Successfully loaded image for course ${course.name}")
+                        return false
+                    }
+                })
+                .into(binding.courseImage)
         }
     }
 }

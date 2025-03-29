@@ -86,12 +86,8 @@
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_profileFragment_to_notificationsFragment"
-            app:destination="@id/notificationsFragment" />
-        <action
             android:id="@+id/action_profileFragment_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
-
     </fragment>
 
     <fragment
@@ -102,7 +98,7 @@
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="com.example.cccc.fragment.EditProfileFragment"
-        android:label="EditProfileFragment" />"
+        android:label="EditProfileFragment" />
 
     <fragment
         android:id="@+id/chatFragment"
