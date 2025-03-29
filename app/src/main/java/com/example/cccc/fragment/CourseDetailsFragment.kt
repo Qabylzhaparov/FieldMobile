@@ -1,7 +1,11 @@
 package com.example.cccc.fragment
 
-import android.content.Context
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Typeface
 import android.media.MediaScannerConnection
 import android.os.Bundle
 import android.os.Environment
@@ -11,14 +15,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.cccc.R
 import com.example.cccc.adapter.LessonAdapter
 import com.example.cccc.databinding.DialogCertificateBinding
 import com.example.cccc.databinding.FragmentCourseDetailsBinding
 import com.example.cccc.entity.Course
-import com.example.cccc.entity.Video
 import com.example.cccc.model.Lesson
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.Firebase
@@ -28,9 +30,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
-class CourseDetailsFragment : Fragment() {
+class CourseDetailsFragment : Fragment(), OnLessonCompletedListener {
 
     private var _binding: FragmentCourseDetailsBinding? = null
     private val binding get() = _binding!!
@@ -83,6 +86,7 @@ class CourseDetailsFragment : Fragment() {
                     val bundle = Bundle().apply {
                         putParcelable("video", video)
                         putString("lessonId", lesson.id)
+                        putString("courseId", course.id.toString())
                     }
                     findNavController().navigate(R.id.action_courseDetails_to_lessonDetails, bundle)
                 }
@@ -125,13 +129,13 @@ class CourseDetailsFragment : Fragment() {
 
     private fun updateProgressUI() {
         val progress = if (totalLessons > 0) {
-            (completedLessons.size.toFloat() / totalLessons.toFloat()) * 100
+            (completedLessons.size.toFloat() / totalLessons.toFloat() * 100).toInt()
         } else {
-            0f
+            0
         }
         
-        binding.progressIndicator.progress = progress.toInt()
-        binding.progressText.text = "${progress.toInt()}%"
+        binding.progressIndicator.progress = progress
+        binding.progressText.text = "$progress%"
         binding.progressDescription.text = "$completedLessons of $totalLessons lessons completed"
 
         binding.getCertificateButton.visibility = if (progress >= 100) View.VISIBLE else View.GONE
@@ -275,10 +279,19 @@ class CourseDetailsFragment : Fragment() {
     }
 
 
-    fun onLessonCompleted(lessonId: String?) {
-        // Проверяем, не был ли урок уже завершен
-        if (lessonId != null && !completedLessons.contains(lessonId)) {
+    override fun onLessonCompleted(lessonId: String) {
+        // Обновляем список завершенных уроков
+        if (!completedLessons.contains(lessonId)) {
             completedLessons.add(lessonId)
+            
+            // Обновляем статус урока в списке
+            val currentList = lessonAdapter.currentList.toMutableList()
+            currentList.find { it.id == lessonId }?.let { lesson ->
+                lesson.isCompleted = true
+                lessonAdapter.submitList(currentList)
+            }
+            
+            // Обновляем UI прогресса
             updateProgressUI()
             
             // Сохраняем прогресс в Firestore
@@ -293,15 +306,14 @@ class CourseDetailsFragment : Fragment() {
                     "completed_lessons" to completedLessons,
                     "last_updated" to System.currentTimeMillis()
                 ))
-                .addOnSuccessListener {
-                    // Обновляем UI после успешного сохранения
-                    updateProgressUI()
-                }
-                .addOnFailureListener { e ->
-                    // В случае ошибки показываем сообщение
-                    Toast.makeText(context, "Failed to save progress: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
         }
+    }
+
+    fun onCourseProgressUpdated(progress: Int) {
+        // Обновляем прогресс курса в UI
+        binding.progressIndicator.progress = progress
+        binding.progressText.text = "$progress%"
+        binding.progressDescription.text = "$completedLessons of $totalLessons lessons completed"
     }
 
     private fun showToast(message: String) {
@@ -322,4 +334,8 @@ class CourseDetailsFragment : Fragment() {
             }
         }
     }
-} 
+}
+
+interface OnLessonCompletedListener {
+    fun onLessonCompleted(lessonId: String)
+}

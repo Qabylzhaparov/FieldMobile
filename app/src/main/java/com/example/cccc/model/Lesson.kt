@@ -5,6 +5,7 @@ data class Lesson(
     val number: Int,
     val title: String,
     val duration: String,
-    val isLocked: Boolean,
-    val videoUrl: String
+    val isLocked: Boolean = false,
+    val videoUrl: String,
+    var isCompleted: Boolean = false
 )

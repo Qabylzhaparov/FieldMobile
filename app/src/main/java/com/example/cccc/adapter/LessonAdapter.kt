@@ -3,7 +3,6 @@ package com.example.cccc.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -29,25 +28,42 @@ class LessonAdapter(
         private val lessonNumber: TextView = itemView.findViewById(R.id.lessonNumber)
         private val lessonTitle: TextView = itemView.findViewById(R.id.lessonTitle)
         private val lessonDuration: TextView = itemView.findViewById(R.id.lessonDuration)
+        private val lockIcon: View = itemView.findViewById(R.id.lockIcon)
+        private val checkIcon: View = itemView.findViewById(R.id.checkIcon)
+
+        init {
+            itemView.setOnClickListener {
+                val lesson = getItem(adapterPosition)
+                onLessonClick(lesson)
+            }
+        }
 
         fun bind(lesson: Lesson) {
             lessonNumber.text = "Lesson ${lesson.number}"
             lessonTitle.text = lesson.title
             lessonDuration.text = lesson.duration
-
-            itemView.setOnClickListener {
-                onLessonClick(lesson)
+            
+            // Обновляем статус урока
+            if (lesson.isLocked) {
+                lockIcon.visibility = View.VISIBLE
+                checkIcon.visibility = View.GONE
+            } else if (lesson.isCompleted) {
+                lockIcon.visibility = View.GONE
+                checkIcon.visibility = View.VISIBLE
+            } else {
+                lockIcon.visibility = View.GONE
+                checkIcon.visibility = View.GONE
             }
         }
     }
+}
 
-    private class LessonDiffCallback : DiffUtil.ItemCallback<Lesson>() {
-        override fun areItemsTheSame(oldItem: Lesson, newItem: Lesson): Boolean {
-            return oldItem.id == newItem.id
-        }
+class LessonDiffCallback : DiffUtil.ItemCallback<Lesson>() {
+    override fun areItemsTheSame(oldItem: Lesson, newItem: Lesson): Boolean {
+        return oldItem.id == newItem.id
+    }
 
-        override fun areContentsTheSame(oldItem: Lesson, newItem: Lesson): Boolean {
-            return oldItem == newItem
-        }
+    override fun areContentsTheSame(oldItem: Lesson, newItem: Lesson): Boolean {
+        return oldItem == newItem
     }
 } 

@@ -246,6 +246,25 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/retryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Try Again"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/resultsSection" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/exitButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Exit"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/retryButton" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView> 

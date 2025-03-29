@@ -26,22 +26,22 @@ object TestRepository {
                 Question(
                     "Which concept is most important in this topic?",
                     listOf("Performance", "Simplicity", "Complexity", "Documentation"),
-                    2
+                    0
                 ),
                 Question(
                     "What is the best practice for implementing this feature?",
                     listOf("Direct approach", "Best practices", "Quick solution", "Trial and error"),
-                    1
+                    0
                 ),
                 Question(
                     "Which approach would you recommend for this scenario?",
                     listOf("Traditional", "Modern", "Hybrid", "Experimental"),
-                    3
+                    0
                 ),
                 Question(
                     "What are the key takeaways from this lesson?",
                     listOf("Speed", "Quality", "Efficiency", "Innovation"),
-                    2
+                    0
                 )
             )
         ),

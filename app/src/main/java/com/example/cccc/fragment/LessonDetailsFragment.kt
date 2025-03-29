@@ -1,7 +1,6 @@
 package com.example.cccc.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,9 @@ import com.example.cccc.model.TestRepository
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ui.PlayerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+
 
 class LessonDetailsFragment : Fragment() {
 
@@ -31,6 +32,9 @@ class LessonDetailsFragment : Fragment() {
     private var currentQuestionIndex = 0
     private val answers = mutableListOf<Int>()
 
+    private lateinit var db: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,6 +47,10 @@ class LessonDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
+        // Инициализируем Firebase
+        db = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
+        
         video = arguments?.getParcelable("video") ?: throw IllegalStateException("Video is required")
         lessonId = arguments?.getString("lessonId")
         
@@ -53,11 +61,7 @@ class LessonDetailsFragment : Fragment() {
         setupPlayer()
         setupTestSection()
         updateUI()
-
-        binding.backButton.setOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
-
+        setupClickListeners()
     }
 
     private fun setupToolbar() {
@@ -164,7 +168,7 @@ class LessonDetailsFragment : Fragment() {
     private fun onVideoCompleted() {
         isLessonCompleted = true
         // Уведомляем родительский фрагмент о завершении урока
-        (parentFragment as? CourseDetailsFragment)?.onLessonCompleted(lessonId)
+        lessonId?.let { (parentFragment as? CourseDetailsFragment)?.onLessonCompleted(it) }
         
         // Показываем сообщение о завершении
         binding.completionMessage.visibility = View.VISIBLE
@@ -232,6 +236,18 @@ class LessonDetailsFragment : Fragment() {
                     correctCount >= test.questions.size * 0.6 -> "Good effort! Keep practicing!"
                     else -> "You might want to review this lesson again."
                 }
+
+                // Показываем кнопки только если тест пройден успешно (70% или больше)
+                if (correctCount >= test.questions.size * 0.7) {
+                    exitButton.visibility = View.VISIBLE
+                    retryButton.visibility = View.GONE
+                    // Автоматически завершаем урок при успешном прохождении
+                    completeLesson()
+                } else {
+                    // Если тест не пройден, показываем только кнопку для повторной попытки
+                    exitButton.visibility = View.GONE
+                    retryButton.visibility = View.VISIBLE
+                }
             }
         }
     }
@@ -245,6 +261,137 @@ class LessonDetailsFragment : Fragment() {
             }
             .setNegativeButton("Continue", null)
             .show()
+    }
+
+    private fun setupClickListeners() {
+        binding.apply {
+            backButton.setOnClickListener {
+                if (!isLessonCompleted) {
+                    showExitConfirmationDialog()
+                } else {
+                    findNavController().navigateUp()
+                }
+            }
+
+            exitButton.setOnClickListener {
+                findNavController().navigateUp()
+            }
+
+            retryButton.setOnClickListener {
+                // Сбрасываем тест для повторной попытки
+                currentQuestionIndex = 0
+                answers.clear()
+                
+                // Возвращаем видимость элементов теста
+                testTitle.visibility = View.VISIBLE
+                questionCounter.visibility = View.VISIBLE
+                questionText.visibility = View.VISIBLE
+                answerOptions.visibility = View.VISIBLE
+                navigationButtons.visibility = View.VISIBLE
+                
+                // Скрываем результаты
+                resultsSection.visibility = View.GONE
+                retryButton.visibility = View.GONE
+                
+                // Обновляем UI теста
+                updateUI()
+            }
+        }
+    }
+
+    private fun completeLesson() {
+        val userId = auth.currentUser?.uid ?: return
+        val courseId = arguments?.getString("courseId")
+        val lessonId = arguments?.getString("lessonId")
+
+        if (courseId.isNullOrEmpty() || lessonId.isNullOrEmpty()) {
+            showToast("Ошибка: отсутствует courseId или lessonId")
+            return
+        }
+
+        val lessonRef = db.collection("users")
+            .document(userId)
+            .collection("courses")
+            .document(courseId)
+            .collection("lessons")
+            .document(lessonId)
+
+        lessonRef.get().addOnSuccessListener { document ->
+            if (document.exists()) {
+                lessonRef.update("completed", true)
+                    .addOnSuccessListener {
+                        showToast("Lesson completed successfully!")
+                        isLessonCompleted = true
+
+                        // Обновляем прогресс курса
+                        updateCourseProgress(userId, courseId)
+
+                        // Уведомляем родительский фрагмент
+                        findNavController().previousBackStackEntry
+                            ?.savedStateHandle
+                            ?.set("lessonCompleted", lessonId)
+
+                        findNavController().navigateUp()
+                    }
+                    .addOnFailureListener { e ->
+                        showToast("Ошибка при завершении урока: ${e.message}")
+                    }
+            } else {
+                showToast("Ошибка: урок не найден в Firestore")
+            }
+        }
+    }
+
+
+    private fun updateCourseProgress(userId: String, courseId: String) {
+        val courseRef = db.collection("users")
+            .document(userId)
+            .collection("courses")
+            .document(courseId)
+
+        courseRef.get().addOnSuccessListener { document ->
+            if (document.exists()) {
+                val totalLessons = document.getLong("totalLessons") ?: 0
+                val completedLessons = document.getLong("completedLessons") ?: 0
+                val newCompletedLessons = completedLessons + 1
+                val progress = (newCompletedLessons.toDouble() / totalLessons.toDouble() * 100).toInt()
+
+                courseRef.update(
+                    "completedLessons", newCompletedLessons,
+                    "progress", progress
+                ).addOnSuccessListener {
+                    findNavController().previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set("courseProgressUpdated", progress)
+                }
+            }
+        }
+    }
+
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showQuizResults(score: Int, totalQuestions: Int) {
+        binding.apply {
+            // Скрываем тест
+            testTitle.visibility = View.VISIBLE
+            questionCounter.visibility = View.GONE
+            questionText.visibility = View.GONE
+            answerOptions.visibility = View.GONE
+            navigationButtons.visibility = View.GONE
+            
+            // Показываем результаты
+            resultsSection.visibility = View.VISIBLE
+            exitButton.visibility = View.VISIBLE
+            
+            scoreText.text = "$score/$totalQuestions"
+            scoreDescription.text = when {
+                score >= totalQuestions * 0.7 -> "Congratulations! You passed the quiz!"
+                else -> "Try again to pass the quiz"
+            }
+        }
     }
 
     override fun onDestroyView() {
