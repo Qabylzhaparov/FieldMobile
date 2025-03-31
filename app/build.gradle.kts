@@ -108,4 +108,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-firestore-ktx:24.10.2")
     implementation("com.google.firebase:firebase-storage-ktx")
+
+    // Gemini
+    implementation("com.google.ai.client.generativeai:generativeai:0.1.1")
 }
