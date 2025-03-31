@@ -14,7 +14,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_back"
         app:title="AI Assistant"
-        app:titleTextColor="#212121" />
+        app:titleTextColor="#212121"
+        app:menu="@menu/chat_menu" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messagesRecyclerView"

@@ -66,6 +66,9 @@ dependencies {
     ksp(libs.androidx.room.compiler) // Используйте ksp вместо kapt для Room
     //ksp("androidx.room:room-compiler:2.5.0") // Используйте ksp вместо kapt для Room
 
+    // Gson
+    implementation("com.google.code.gson:gson:2.10.1")
+
     // Room KTX для работы с корутинами
     implementation(libs.androidx.room.ktx) // Добавьте эту строку
 
@@ -108,7 +111,4 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-firestore-ktx:24.10.2")
     implementation("com.google.firebase:firebase-storage-ktx")
-
-    // Gemini
-    implementation("com.google.ai.client.generativeai:generativeai:0.1.1")
 }

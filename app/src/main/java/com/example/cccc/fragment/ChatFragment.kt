@@ -1,20 +1,20 @@
 package com.example.cccc.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.cccc.R
 import com.example.cccc.adapter.MessageAdapter
 import com.example.cccc.databinding.FragmentChatBinding
 import com.example.cccc.model.Message
-import com.google.ai.client.generativeai.GenerativeModel
-import com.google.ai.client.generativeai.type.GenerateContentResponse
-import com.google.ai.client.generativeai.type.content
-import com.google.ai.client.generativeai.type.generationConfig
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,9 +31,11 @@ class ChatFragment : Fragment() {
 
     private lateinit var messageAdapter: MessageAdapter
     private val messages = mutableListOf<Message>()
-    private lateinit var generativeModel: GenerativeModel
 
-
+    companion object {
+        private const val PREFS_NAME = "ChatPrefs"
+        private const val KEY_MESSAGES = "messages"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,19 +52,26 @@ class ChatFragment : Fragment() {
         setupToolbar()
         setupRecyclerView()
         setupMessageInput()
-
-        // Добавляем приветственное сообщение
-        messages.add(Message(
-            "Hello! I'm your AI assistant. How can I help you today?",
-            false
-        ))
-        messageAdapter.submitList(messages.toList())
+        loadMessages()
     }
 
     private fun setupToolbar() {
+        // Убираем строку добавления меню здесь
+        binding.toolbar.setOnMenuItemClickListener { item ->
+            if (item.itemId == R.id.action_clear_chat) {
+                clearChat()
+                true
+            } else false
+        }
+
         binding.toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear() // Очистка перед добавлением нового меню
+        inflater.inflate(R.menu.chat_menu, menu)
     }
 
     private fun setupRecyclerView() {
@@ -77,31 +86,49 @@ class ChatFragment : Fragment() {
         binding.sendButton.setOnClickListener {
             val messageText = binding.messageInput.text.toString().trim()
             if (messageText.isNotEmpty()) {
-                // Добавляем сообщение пользователя
-                val userMessage = Message(messageText, true)
-                messages.add(userMessage)
-                messageAdapter.submitList(messages.toList())
-
-                // Очищаем поле ввода
+                messages.add(Message(messageText, true))
+                updateChat()
                 binding.messageInput.text?.clear()
-
-                // Прокручиваем к последнему сообщению
-                binding.messagesRecyclerView.scrollToPosition(messages.size - 1)
-
-                // Получаем ответ от AI
                 getAIResponse(messageText)
             }
         }
     }
 
+    private fun loadMessages() {
+        val prefs = requireContext().getSharedPreferences(PREFS_NAME, 0)
+        val messagesJson = prefs.getString(KEY_MESSAGES, null)
 
+        if (messagesJson != null) {
+            val type = object : TypeToken<List<Message>>() {}.type
+            messages.addAll(Gson().fromJson(messagesJson, type))
+        } else {
+            messages.add(Message("Hello! I'm your AI assistant. How can I help you today?", false))
+        }
+
+        updateChat()
+    }
+
+    private fun saveMessages() {
+        val prefs = requireContext().getSharedPreferences(PREFS_NAME, 0)
+        prefs.edit().putString(KEY_MESSAGES, Gson().toJson(messages)).apply()
+    }
+
+    private fun clearChat() {
+        messages.clear()
+        messages.add(Message("Hello! I'm your AI assistant. How can I help you today?", false))
+        updateChat()
+    }
+
+    private fun updateChat() {
+        messageAdapter.submitList(messages.toList())
+        binding.messagesRecyclerView.scrollToPosition(messages.size - 1)
+        saveMessages()
+    }
 
     private fun getAIResponse(userMessage: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val apiKey = "AIzaSyBpRcrcvZPH7f1orljH5o9BN2J8I28ZVg0" // Replace with your actual API key
-                val url =
-                    "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$apiKey"
+                val url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBpRcrcvZPH7f1orljH5o9BN2J8I28ZVg0"
 
                 val jsonRequest = JSONObject().apply {
                     put("contents", JSONArray().apply {
@@ -123,7 +150,6 @@ class ChatFragment : Fragment() {
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     showError("Error getting AI response: ${e.message}")
-                    Log.e("ChatFragment", "Error getting AI response: ${e.message}")
                 }
             }
         }
@@ -136,29 +162,17 @@ class ChatFragment : Fragment() {
         connection.setRequestProperty("Content-Type", "application/json")
         connection.doOutput = true
 
-        println("Request URL: $urlString")
-        println("Request JSON: $jsonInput")
+        connection.outputStream.use { it.write(jsonInput.toByteArray(Charsets.UTF_8)) }
 
-        connection.outputStream.use { outputStream ->
-            outputStream.write(jsonInput.toByteArray(Charsets.UTF_8))
-        }
-
-        val responseCode = connection.responseCode
-        println("HTTP Response Code: $responseCode")
-
-        return if (responseCode == 200) {
+        return if (connection.responseCode == 200) {
             connection.inputStream.bufferedReader().use { it.readText() }
         } else {
-            val errorResponse = connection.errorStream?.bufferedReader()?.use { it.readText() }
-            println("HTTP Error Response: $errorResponse")
-            throw Exception("API Error: $responseCode - $errorResponse")
+            throw Exception("API Error: ${connection.responseCode}")
         }
     }
 
-
     private fun handleAIResponse(responseJson: String) {
-        val jsonObject = JSONObject(responseJson)
-        val responseText = jsonObject.optJSONArray("candidates")
+        val responseText = JSONObject(responseJson).optJSONArray("candidates")
             ?.optJSONObject(0)
             ?.optJSONObject("content")
             ?.optJSONArray("parts")
@@ -166,8 +180,7 @@ class ChatFragment : Fragment() {
             ?.optString("text") ?: "Sorry, I couldn't generate a response."
 
         messages.add(Message(responseText, false))
-        messageAdapter.submitList(messages.toList())
-        binding.messagesRecyclerView.scrollToPosition(messages.size - 1)
+        updateChat()
     }
 
     private fun showError(message: String) {

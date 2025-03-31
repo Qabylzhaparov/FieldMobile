@@ -22,6 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxWidth="280dp"
+            android:fontFamily="@font/poppins_medium"
             android:padding="12dp"
             android:textColor="#212121"
             tools:layout_editor_absoluteX="275dp"
@@ -45,6 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxWidth="280dp"
+            android:fontFamily="@font/poppins_medium"
             android:padding="12dp"
             android:textColor="#212121" />
 
