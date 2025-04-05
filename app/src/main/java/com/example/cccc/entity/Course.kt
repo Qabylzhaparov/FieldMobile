@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import kotlinx.parcelize.Parcelize
+import java.util.Date
 
 @Parcelize
 @Entity(tableName = "Courses")
@@ -18,7 +19,9 @@ data class Course(
     val price: Double,
     val category: String,
     val videos: List<Video>,
-    val tests: List<Test>
+    val tests: List<Test>,
+    val isPurchased: Boolean = false,
+    val lastSynced: Date = Date()
 ) : Parcelable
 
 @Parcelize

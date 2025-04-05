@@ -91,11 +91,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/notificationsFragment"
-        android:name="com.example.cccc.fragment.NotificationsFragment"
-        android:label="NotificationsFragment" />
-
-    <fragment
         android:id="@+id/editProfileFragment"
         android:name="com.example.cccc.fragment.EditProfileFragment"
         android:label="EditProfileFragment" />

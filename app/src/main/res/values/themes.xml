@@ -2,8 +2,13 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.CCCC" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Прозрачный ActionBar -->
+        <item name="windowActionBar">false</item> <!-- Отключаем стандартный ActionBar -->
+        <item name="windowNoTitle">true</item> <!-- Отключаем заголовок -->
+        <item name="android:windowBackground">@android:color/transparent</item> <!-- Прозрачный фон -->
     </style>
 
-    <style name="Theme.CCCC" parent="Base.Theme.CCCC" />
+    <style name="Theme.CCCC" parent="Base.Theme.CCCC">
+        <!-- Дополнительные кастомизации можно добавить здесь -->
+    </style>
 </resources>

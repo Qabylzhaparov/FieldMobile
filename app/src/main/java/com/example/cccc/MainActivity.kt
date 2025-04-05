@@ -8,9 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.cccc.adapter.CourseAdapter
+import com.example.cccc.database.CourseRepository
 import com.example.cccc.databinding.ActivityMainBinding
 import com.example.cccc.fragment.LoginFragment
-import com.example.cccc.vm.CourseRepository
 import com.example.cccc.vm.CourseViewModel
 import javax.inject.Inject
 

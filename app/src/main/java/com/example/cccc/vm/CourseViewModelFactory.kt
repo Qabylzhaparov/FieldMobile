@@ -2,6 +2,7 @@ package com.example.cccc.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.cccc.database.CourseRepository
 import javax.inject.Inject
 
 class CourseViewModelFactory @Inject constructor(

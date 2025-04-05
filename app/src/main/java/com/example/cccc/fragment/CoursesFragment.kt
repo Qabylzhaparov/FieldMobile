@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cccc.R
 import com.example.cccc.adapter.CourseAdapter
 import com.example.cccc.databinding.FragmentCoursesBinding
-import com.example.cccc.db.CourseRepository
+import com.example.cccc.db.CourseRepositoryLocal
 import com.example.cccc.entity.Course
 
 class CoursesFragment : Fragment() {
@@ -45,7 +45,7 @@ class CoursesFragment : Fragment() {
         }
 
         // Загружаем курсы из репозитория
-        courseAdapter.submitList(CourseRepository.getCourses())
+        courseAdapter.submitList(CourseRepositoryLocal.getCourses())
     }
 
     private fun setupFilterButton() {

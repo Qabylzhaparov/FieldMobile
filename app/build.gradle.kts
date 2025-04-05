@@ -78,12 +78,15 @@ dependencies {
 
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1") // Убедитесь, что эта строка добавлена
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
 
     // Koin core
     // implementation(libs.koin.android)
 
     // Koin для ViewModel (если используете ViewModel с Koin)
     //implementation(libs.koin.androidx.viewmodel)
+
+    implementation("com.google.android.material:material:1.7.0") // или более новая версия для Material3
 
     // Dagger 2
     implementation("com.google.dagger:dagger:2.52")

@@ -4,7 +4,7 @@ import com.example.cccc.entity.Course
 import com.example.cccc.entity.Test
 import com.example.cccc.entity.Video
 
-object CourseRepository {
+object CourseRepositoryLocal {
     fun getCourses(): List<Course> {
         return listOf(
             Course(
