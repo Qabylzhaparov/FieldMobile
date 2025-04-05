@@ -51,6 +51,7 @@
                 android:hint="Type your message..."
                 android:inputType="textMultiLine"
                 android:maxLines="4"
+                android:textColor="@color/white"
                 android:minHeight="48dp"
                 android:padding="12dp" />
 
@@ -64,6 +65,7 @@
                 android:insetBottom="0dp"
                 android:backgroundTint="@color/blue"
                 android:text="Send"
+                android:textColor="@color/white"
                 app:cornerRadius="20dp" />
 
         </LinearLayout>

@@ -149,7 +149,6 @@ class CourseDetailsFragment : Fragment(), OnLessonCompletedListener {
 
             courseTitle.text = course.name
             coursePrice.text = "$${course.price}"
-            courseDuration.text = "${course.videos?.size ?: 0} lessons"
             aboutDescription.text = course.description
         }
     }

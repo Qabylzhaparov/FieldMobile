@@ -23,14 +23,17 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:hint="Full Name"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@android:color/black"
+        app:hintTextColor="@android:color/black"
         app:layout_constraintTop_toBottomOf="@id/title">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/nameInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName" />
-
+            android:inputType="textPersonName"
+            android:textColor="@android:color/black" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -39,14 +42,17 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="Email"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@android:color/black"
+        app:hintTextColor="@android:color/black"
         app:layout_constraintTop_toBottomOf="@id/nameLayout">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/emailInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress" />
-
+            android:inputType="textEmailAddress"
+            android:textColor="@android:color/black" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -57,7 +63,8 @@
         android:padding="12dp"
         android:backgroundTint="@color/blue"
         android:text="Save Changes"
+        android:textColor="@color/white"
         android:textAllCaps="false"
         app:layout_constraintTop_toBottomOf="@id/emailLayout" />
 
-</androidx.constraintlayout.widget.ConstraintLayout> 
+</androidx.constraintlayout.widget.ConstraintLayout>

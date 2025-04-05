@@ -1,25 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_home_gradient"
-    tools:context=".fragment.HomeFragment">
+    android:background="@color/white"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="24dp"
-        android:paddingTop="48dp"
         android:paddingBottom="24dp">
 
-        <!-- Header Section -->
+        <View
+            android:id="@+id/headerBackground"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:background="@color/blue"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Header -->
+
+        <!-- Learning Progress Card -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/headerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_marginTop="16dp"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="-147dp">
 
             <TextView
                 android:id="@+id/tvUserName"
@@ -33,38 +44,39 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tvGreeting"
+                android:id="@+id/tvUserName3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:text="Let's start learning"
                 android:textColor="#FFFFFF"
-                android:textSize="14sp"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvUserName" />
+                app:layout_constraintTop_toBottomOf="@+id/tvUserName"
+                app:layout_constraintVertical_bias="1.0" />
 
-            <ImageView
-                android:id="@+id/ivUserProfile"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle_background"
-                android:padding="1dp"
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivProfile"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/profile"
+                android:src="@drawable/ic_profile"
+                android:tint="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/CircleImageView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Progress Section -->
         <androidx.cardview.widget.CardView
             android:id="@+id/progressCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:cardBackgroundColor="#F5F5F5"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="20dp"
+            app:cardBackgroundColor="#FFFFFF"
             app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
+            app:cardElevation="4dp"
             app:layout_constraintTop_toBottomOf="@id/headerLayout">
 
             <LinearLayout
@@ -85,7 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="46min"
+                    android:text="0min"
                     android:textColor="#212121"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -96,60 +108,71 @@
                     android:layout_width="match_parent"
                     android:layout_height="4dp"
                     android:layout_marginTop="8dp"
-                    android:progress="75"
+                    android:progress="0"
                     android:progressBackgroundTint="#E0E0E0"
-                    android:progressTint="#4C6FFF" />
+                    android:progressTint="#FF5722" />
 
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
-        <!-- What do you want to learn Section -->
+        <!-- Get Started Card -->
         <androidx.cardview.widget.CardView
             android:id="@+id/learnCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
             android:layout_marginTop="24dp"
-            app:cardBackgroundColor="#FFFFFF"
             app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
+            app:cardElevation="4dp"
             app:layout_constraintTop_toBottomOf="@id/progressCard">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="20dp">
+                android:background="@drawable/learn_today"
+                android:padding="16dp">
 
                 <TextView
                     android:id="@+id/tvLearnTitle"
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:text="What do you want to learn today?"
                     android:textColor="#212121"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@id/ivLearnImage"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <Button
-                    android:id="@+id/btnGetStarted"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="16dp"
-                    android:backgroundTint="#FF6B4E"
-                    android:text="Get Started"
-                    android:textAllCaps="false"
-                    android:textColor="#FFFFFF"
+                <TextView
+                    android:id="@+id/tvLearnDescription"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Choose from our wide range of courses and start learning today!"
+                    android:textColor="#757575"
+                    android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvLearnTitle" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGetStarted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="#ff6905"
+                    android:text="Get Started"
+                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvLearnDescription" />
 
                 <ImageView
                     android:id="@+id/ivLearnImage"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/placeholder"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -162,152 +185,75 @@
             android:id="@+id/tvLearningPlanTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
-            android:text="Learning Plan"
-            android:textColor="#FFFFFF"
+            android:text="Best of the Month"
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/learnCard" />
 
         <!-- Learning Plan Items -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/planCard1"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvLearningPlan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
-            app:layout_constraintTop_toBottomOf="@id/tvLearningPlanTitle">
+            android:layout_marginTop="8dp"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/tvLearningPlanTitle" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Packaging Design"
-                    android:textColor="#212121"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <ProgressBar
-                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:layout_marginTop="8dp"
-                    android:progress="75"
-                    android:progressBackgroundTint="#E0E0E0"
-                    android:progressTint="#4C6FFF" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="40/48"
-                    android:textColor="#757575"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
+        <!-- AI Assistant Card -->
         <androidx.cardview.widget.CardView
-            android:id="@+id/planCard2"
+            android:id="@+id/aiAssistantCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
-            app:layout_constraintTop_toBottomOf="@id/planCard1">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Product Design"
-                    android:textColor="#212121"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <ProgressBar
-                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:layout_marginTop="8dp"
-                    android:progress="25"
-                    android:progressBackgroundTint="#E0E0E0"
-                    android:progressTint="#4C6FFF" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="6/24"
-                    android:textColor="#757575"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <!-- Meetup Section -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/meetupCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
             android:layout_marginTop="32dp"
-            app:cardBackgroundColor="#F0F1FF"
+            app:cardBackgroundColor="#efe0ff"
             app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
-            app:layout_constraintTop_toBottomOf="@id/planCard2">
+            app:cardElevation="4dp"
+            app:layout_constraintTop_toBottomOf="@id/rvLearningPlan">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="20dp">
+                android:padding="16dp">
 
                 <TextView
-                    android:id="@+id/tvMeetupTitle"
+                    android:id="@+id/tvAiTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:text="Meetup"
+                    android:text="AI Assistant"
                     android:textColor="#212121"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@id/ivMeetupImage"
+                    app:layout_constraintEnd_toStartOf="@id/ivAiImage"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/tvMeetupDescription"
+                    android:id="@+id/tvAiDescription"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:text="Off-line exchange of learning experience"
+                    android:text="Get help with your learning journey from our AI assistant"
                     android:textColor="#757575"
                     android:textSize="14sp"
-                    app:layout_constraintEnd_toStartOf="@id/ivMeetupImage"
+                    app:layout_constraintEnd_toStartOf="@id/ivAiImage"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvMeetupTitle" />
+                    app:layout_constraintTop_toBottomOf="@id/tvAiTitle" />
 
                 <ImageView
-                    android:id="@+id/ivMeetupImage"
+                    android:id="@+id/ivAiImage"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/placeholder"
+                    android:src="@drawable/ai_assistant"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -317,4 +263,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</ScrollView>
+</androidx.core.widget.NestedScrollView>
