@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#FFFFFF"
@@ -55,42 +56,42 @@
             android:id="@+id/chipDesign"
             style="@style/CustomChipChoice"
             android:layout_width="wrap_content"
-            android:text="Design"
+            android:text="Mobile Development"
             android:checkable="true" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipPainting"
             style="@style/CustomChipChoice"
             android:layout_width="wrap_content"
-            android:text="Painting"
+            android:text="Backend Development"
             android:checkable="true" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipCoding"
             style="@style/CustomChipChoice"
             android:layout_width="wrap_content"
-            android:text="Coding"
+            android:text="Web Programming"
             android:checkable="true" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipMusic"
             style="@style/CustomChipChoice"
             android:layout_width="wrap_content"
-            android:text="Music"
+            android:text="Data Analysis"
             android:checkable="true" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipVisualIdentity"
             style="@style/CustomChipChoice"
             android:layout_width="wrap_content"
-            android:text="Visual Identity"
+            android:text="Machine Learning"
             android:checkable="true" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipMathematics"
             style="@style/CustomChipChoice"
             android:layout_width="wrap_content"
-            android:text="Mathematics"
+            android:text="DevOps"
             android:checkable="true" />
 
     </com.google.android.material.chip.ChipGroup>
@@ -114,15 +115,16 @@
         android:layout_marginTop="16dp"
         android:valueFrom="0"
         android:valueTo="200"
+        app:haloColor="#1A4C6FFF"
         app:labelBehavior="gone"
         app:layout_constraintTop_toBottomOf="@id/priceTitle"
         app:thumbColor="#4C6FFF"
-        app:thumbRadius="12dp"
         app:thumbElevation="0dp"
+        app:thumbRadius="12dp"
         app:trackColorActive="#4C6FFF"
         app:trackColorInactive="#E0E0E0"
         app:trackHeight="6dp"
-        app:haloColor="#1A4C6FFF" />
+        tools:layout_editor_absoluteX="24dp" />
 
     <TextView
         android:id="@+id/priceStart"
@@ -144,63 +146,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/priceRangeSlider" />
 
-    <TextView
-        android:id="@+id/durationTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Duration"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/priceStart" />
-
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/durationChipGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:chipSpacingHorizontal="8dp"
-        app:chipSpacingVertical="8dp"
-        app:layout_constraintTop_toBottomOf="@id/durationTitle">
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip3_8"
-            style="@style/CustomChipChoice"
-            android:layout_width="wrap_content"
-            android:text="3-8 hours"
-            android:checkable="true" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip8_14"
-            style="@style/CustomChipChoice"
-            android:layout_width="wrap_content"
-            android:text="8-14 hours"
-            android:checkable="true" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip14_20"
-            style="@style/CustomChipChoice"
-            android:layout_width="wrap_content"
-            android:text="14-20 hours"
-            android:checkable="true" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip20_24"
-            style="@style/CustomChipChoice"
-            android:layout_width="wrap_content"
-            android:text="20-24 hours"
-            android:checkable="true" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip24_30"
-            style="@style/CustomChipChoice"
-            android:layout_width="wrap_content"
-            android:text="24-30 hours"
-            android:checkable="true" />
-
-    </com.google.android.material.chip.ChipGroup>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/clearButton"
@@ -208,17 +153,17 @@
         android:layout_height="56dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
+        android:backgroundTint="#FFFFFF"
         android:text="Clear"
         android:textAllCaps="false"
         android:textColor="#4C6FFF"
-        android:backgroundTint="#FFFFFF"
         app:cornerRadius="12dp"
-        app:strokeColor="#4C6FFF"
-        app:strokeWidth="1dp"
         app:layout_constraintEnd_toStartOf="@id/applyButton"
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/durationChipGroup" />
+        app:layout_constraintTop_toBottomOf="@+id/priceRangeSlider"
+        app:strokeColor="#4C6FFF"
+        app:strokeWidth="1dp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/applyButton"

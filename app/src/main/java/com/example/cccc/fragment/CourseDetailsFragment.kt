@@ -334,7 +334,7 @@ class CourseDetailsFragment : Fragment(), OnLessonCompletedListener {
             }
         }
     }
-}
+} 
 
 interface OnLessonCompletedListener {
     fun onLessonCompleted(lessonId: String)

@@ -3,6 +3,7 @@ package com.example.cccc.db
 import com.example.cccc.entity.Course
 import com.example.cccc.entity.Test
 import com.example.cccc.entity.Video
+import com.example.cccc.model.CourseCategory
 
 object CourseRepositoryLocal {
     fun getCourses(): List<Course> {
@@ -14,7 +15,7 @@ object CourseRepositoryLocal {
                 description = "Изучение основ Kotlin с нуля",
                 imageUrl = "https://upload.wikimedia.org/wikipedia/commons/7/74/Kotlin_Icon.png",
                 price = 19.99,
-                category = "Программирование",
+                category = CourseCategory.PROGRAMMING,
                 videos = listOf(
                     Video(id = 1, course = 1, title = "Введение в Kotlin", url = "https://www.youtube.com/watch?v=H_oGi8uuDpA"),
                     Video(id = 2, course = 1, title = "Переменные и типы данных", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
@@ -25,7 +26,9 @@ object CourseRepositoryLocal {
                 ),
                 tests = listOf(
                     Test(id = 1, question = "Что такое Kotlin?", options = listOf("Язык", "Среда", "Фреймворк"), correctAnswer = 0)
-                )
+                ),
+                isNew = false,
+                isPopular = false
             ),
             Course(
                 id = 2,
@@ -34,13 +37,15 @@ object CourseRepositoryLocal {
                 description = "Как создавать мобильные приложения на Android",
                 imageUrl = "https://logowik.com/content/uploads/images/t_android-studio5850.logowik.com.webp",
                 price = 29.99,
-                category = "Мобильная разработка",
+                category = CourseCategory.MOBILE,
                 videos = listOf(
                     Video(id = 7, course = 2, title = "Activity и фрагменты", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U")
                 ),
                 tests = listOf(
                     Test(id = 2, question = "Что такое Activity?", options = listOf("Класс", "Файл", "Метод"), correctAnswer = 1)
-                )
+                ),
+                isNew = false,
+                isPopular = true
             ),
             Course(
                 id = 3,
@@ -49,7 +54,7 @@ object CourseRepositoryLocal {
                 description = "Современная разработка UI в Android с помощью Jetpack Compose",
                 imageUrl = " ",
                 price = 34.99,
-                category = "Мобильная разработка",
+                category = CourseCategory.MOBILE,
                 videos = listOf(
                     Video(id = 13, course = 3, title = "Введение в Jetpack Compose", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
                     Video(id = 14, course = 3, title = "Работа с состоянием в Compose", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
@@ -60,7 +65,9 @@ object CourseRepositoryLocal {
                 ),
                 tests = listOf(
                     Test(id = 3, question = "Какой язык используется в Jetpack Compose?", options = listOf("Java", "Kotlin", "Dart"), correctAnswer = 1)
-                )
+                ),
+                isNew = true,
+                isPopular = false
             ),
             Course(
                 id = 4,
@@ -69,7 +76,7 @@ object CourseRepositoryLocal {
                 description = "Разработка серверных приложений с использованием Spring Boot",
                 imageUrl = "https://logowik.com/content/uploads/images/spring-java7947.logowik.com.webp",
                 price = 39.99,
-                category = "Backend-разработка",
+                category = CourseCategory.BACKEND,
                 videos = listOf(
                     Video(id = 19, course = 4, title = "Основы Spring Boot", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
                     Video(id = 20, course = 4, title = "Работа с базой данных", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
@@ -80,7 +87,9 @@ object CourseRepositoryLocal {
                 ),
                 tests = listOf(
                     Test(id = 4, question = "Какой язык используется в Spring Boot?", options = listOf("C++", "Python", "Java"), correctAnswer = 2)
-                )
+                ),
+                isNew = true,
+                isPopular = false
             ),
             Course(
                 id = 5,
@@ -89,7 +98,7 @@ object CourseRepositoryLocal {
                 description = "Как анализировать данные с использованием Pandas и NumPy",
                 imageUrl = "https://logowik.com/content/uploads/images/python4089.logowik.com.webp",
                 price = 24.99,
-                category = "Анализ данных",
+                category = CourseCategory.DATA_ANALYSIS,
                 videos = listOf(
                     Video(id = 25, course = 5, title = "Основы Pandas", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
                     Video(id = 26, course = 5, title = "Работа с массивами в NumPy", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
@@ -100,7 +109,9 @@ object CourseRepositoryLocal {
                 ),
                 tests = listOf(
                     Test(id = 5, question = "Какой модуль используется для работы с таблицами?", options = listOf("Pandas", "NumPy", "Matplotlib"), correctAnswer = 0)
-                )
+                ),
+                isNew = false,
+                isPopular = true
             ),
             Course(
                 id = 6,
@@ -109,7 +120,7 @@ object CourseRepositoryLocal {
                 description = "Как строить модели машинного обучения с Scikit-learn",
                 imageUrl = "https://logowik.com/content/uploads/images/azure-machine-learning-service1395.jpg",
                 price = 49.99,
-                category = "Машинное обучение",
+                category = CourseCategory.MACHINE_LEARNING,
                 videos = listOf(
                     Video(id = 31, course = 6, title = "Введение в машинное обучение", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
                     Video(id = 32, course = 6, title = "Обучение моделей", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
@@ -120,7 +131,9 @@ object CourseRepositoryLocal {
                 ),
                 tests = listOf(
                     Test(id = 6, question = "Какой метод используется для классификации?", options = listOf("KNN", "SQL", "HTML"), correctAnswer = 0)
-                )
+                ),
+                isNew = false,
+                isPopular = false
             ),
             Course(
                 id = 7,
@@ -129,7 +142,7 @@ object CourseRepositoryLocal {
                 description = "Основы JavaScript и современной веб-разработки",
                 imageUrl = "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png",
                 price = 29.99,
-                category = "Веб-разработка",
+                category = CourseCategory.WEB_DEVELOPMENT,
                 videos = listOf(
                     Video(id = 37, course = 7, title = "Основы JavaScript", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
                     Video(id = 38, course = 7, title = "DOM манипуляции", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
@@ -140,7 +153,9 @@ object CourseRepositoryLocal {
                 ),
                 tests = listOf(
                     Test(id = 7, question = "Что такое DOM?", options = listOf("Document Object Model", "Data Object Model", "Digital Object Model"), correctAnswer = 0)
-                )
+                ),
+                isNew = false,
+                isPopular = true
             ),
             Course(
                 id = 8,
@@ -149,7 +164,7 @@ object CourseRepositoryLocal {
                 description = "Продвинутые концепции разработки на React",
                 imageUrl = "https://logowik.com/content/uploads/images/react7473.logowik.com.webp",
                 price = 44.99,
-                category = "Веб-разработка",
+                category = CourseCategory.WEB_DEVELOPMENT,
                 videos = listOf(
                     Video(id = 43, course = 8, title = "Хуки в React", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
                     Video(id = 44, course = 8, title = "Redux и управление состоянием", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
@@ -160,7 +175,9 @@ object CourseRepositoryLocal {
                 ),
                 tests = listOf(
                     Test(id = 8, question = "Для чего используется Redux?", options = listOf("Управление состоянием", "Маршрутизация", "Стилизация"), correctAnswer = 0)
-                )
+                ),
+                isNew = true,
+                isPopular = true
             ),
             Course(
                 id = 9,
@@ -169,7 +186,7 @@ object CourseRepositoryLocal {
                 description = "Контейнеризация и оркестрация приложений",
                 imageUrl = "https://logowik.com/content/uploads/images/t_301_docker.jpg",
                 price = 54.99,
-                category = "DevOps",
+                category = CourseCategory.DEVOPS,
                 videos = listOf(
                     Video(id = 49, course = 9, title = "Основы Docker", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
                     Video(id = 50, course = 9, title = "Kubernetes в действии", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
@@ -180,7 +197,9 @@ object CourseRepositoryLocal {
                 ),
                 tests = listOf(
                     Test(id = 9, question = "Что такое контейнер?", options = listOf("Изолированная среда", "База данных", "Фреймворк"), correctAnswer = 0)
-                )
+                ),
+                isNew = false,
+                isPopular = false
             ),
             Course(
                 id = 10,
@@ -189,7 +208,7 @@ object CourseRepositoryLocal {
                 description = "Создание кроссплатформенных приложений с Flutter",
                 imageUrl = "https://logowik.com/content/uploads/images/t_flutter5786.jpg",
                 price = 39.99,
-                category = "Мобильная разработка",
+                category = CourseCategory.MOBILE,
                 videos = listOf(
                     Video(id = 55, course = 10, title = "Введение во Flutter", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
                     Video(id = 56, course = 10, title = "Работа с виджетами", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
@@ -200,7 +219,9 @@ object CourseRepositoryLocal {
                 ),
                 tests = listOf(
                     Test(id = 10, question = "На каком языке пишут Flutter приложения?", options = listOf("Dart", "JavaScript", "Swift"), correctAnswer = 0)
-                )
+                ),
+                isNew = true,
+                isPopular = true
             )
         )
     }

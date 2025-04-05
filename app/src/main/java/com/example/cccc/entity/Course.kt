@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import com.example.cccc.model.CourseCategory
 import kotlinx.parcelize.Parcelize
 import java.util.Date
 
@@ -17,9 +18,11 @@ data class Course(
     val description: String,
     val imageUrl: String,
     val price: Double,
-    val category: String,
+    val category: CourseCategory,
     val videos: List<Video>,
     val tests: List<Test>,
+    val isPopular: Boolean,
+    val isNew: Boolean,
     val isPurchased: Boolean = false,
     val lastSynced: Date = Date()
 ) : Parcelable

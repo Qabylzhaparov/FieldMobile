@@ -38,11 +38,9 @@ class CourseAdapter(
 
         fun bind(course: Course) {
             binding.courseName.text = course.name
-            binding.courseCategory.text = course.category
+            binding.courseCategory.text = course.category.toString()
             binding.coursePrice.text = "$${course.price}$"
-            
-            Log.d("CourseAdapter", "Loading image for course ${course.name}: ${course.imageUrl}")
-            
+
             Glide.with(binding.root.context)
                 .load(course.imageUrl)
                 .placeholder(R.drawable.placeholder)
@@ -54,7 +52,6 @@ class CourseAdapter(
                         target: Target<android.graphics.drawable.Drawable>?,
                         isFirstResource: Boolean
                     ): Boolean {
-                        Log.e("CourseAdapter", "Failed to load image for course ${course.name}", e)
                         return false
                     }
 
@@ -65,7 +62,6 @@ class CourseAdapter(
                         dataSource: com.bumptech.glide.load.DataSource?,
                         isFirstResource: Boolean
                     ): Boolean {
-                        Log.d("CourseAdapter", "Successfully loaded image for course ${course.name}")
                         return false
                     }
                 })
