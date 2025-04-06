@@ -1,4 +1,4 @@
-package com.example.cccc.db
+package com.example.cccc.database
 
 import com.example.cccc.entity.Course
 import com.example.cccc.entity.Test

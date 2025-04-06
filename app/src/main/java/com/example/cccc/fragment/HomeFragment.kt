@@ -12,9 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cccc.R
 import com.example.cccc.adapter.CourseAdapter
 import com.example.cccc.databinding.FragmentHomeBinding
-import com.example.cccc.databinding.FragmentLessonDetailsBinding
-import com.example.cccc.db.CourseRepositoryLocal
-import com.example.cccc.entity.Course
+import com.example.cccc.database.CourseRepositoryLocal
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth

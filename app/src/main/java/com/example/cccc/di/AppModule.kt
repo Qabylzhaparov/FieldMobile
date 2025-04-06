@@ -6,7 +6,6 @@ import androidx.room.Room
 import com.example.cccc.dao.CourseDao
 import com.example.cccc.database.AppDatabase
 import com.example.cccc.database.CourseRepository
-import com.example.cccc.db.CourseRepositoryLocal
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

@@ -6,7 +6,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -15,13 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cccc.R
 import com.example.cccc.adapter.CourseAdapter
 import com.example.cccc.databinding.FragmentCoursesBinding
-import com.example.cccc.db.CourseRepositoryLocal
+import com.example.cccc.database.CourseRepositoryLocal
 import com.example.cccc.entity.Course
 import com.example.cccc.model.CourseCategory
 import com.example.cccc.model.CourseFilter
 import com.google.android.material.card.MaterialCardView
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 
 class CoursesFragment : Fragment() {
 
