@@ -5,7 +5,7 @@ import android.app.Application
 import com.example.cccc.database.AppDatabase
 import com.example.cccc.di.AppModule
 //import com.example.cccc.di.DaggerAppComponent
-//import com.example.cccc.repository.SyncRepository
+//import com.example.cccc.service.SyncRepository
 import com.example.cccc.service.NetworkMonitor
 import com.google.firebase.firestore.FirebaseFirestore
 

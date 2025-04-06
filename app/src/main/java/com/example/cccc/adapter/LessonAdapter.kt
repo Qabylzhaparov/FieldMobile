@@ -27,7 +27,6 @@ class LessonAdapter(
     inner class LessonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val lessonNumber: TextView = itemView.findViewById(R.id.lessonNumber)
         private val lessonTitle: TextView = itemView.findViewById(R.id.lessonTitle)
-        private val lessonDuration: TextView = itemView.findViewById(R.id.lessonDuration)
         private val lockIcon: View = itemView.findViewById(R.id.lockIcon)
         private val checkIcon: View = itemView.findViewById(R.id.checkIcon)
 
@@ -41,8 +40,7 @@ class LessonAdapter(
         fun bind(lesson: Lesson) {
             lessonNumber.text = "Lesson ${lesson.number}"
             lessonTitle.text = lesson.title
-            lessonDuration.text = lesson.duration
-            
+
             // Обновляем статус урока
             if (lesson.isLocked) {
                 lockIcon.visibility = View.VISIBLE

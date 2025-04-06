@@ -15,11 +15,11 @@ data class CourseEntity(
     val description: String,
     val imageUrl: String,
     val price: Double,
-    val duration: Int,
     val category: String,
-    val totalLessons: Int = 0,
-    val totalVideos: Int = 0,
-    val totalTests: Int = 0,
+    val rating: Double,
+    val instructor: String,
+    val duration: String,
     val isPurchased: Boolean = false,
-    val lastSynced: Date = Date()
+    val createdAt: Date = Date(),
+    val updatedAt: Date = Date()
 ) 

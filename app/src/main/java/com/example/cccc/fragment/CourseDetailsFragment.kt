@@ -14,7 +14,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.cccc.R
 import com.example.cccc.adapter.LessonAdapter
@@ -22,6 +24,7 @@ import com.example.cccc.databinding.DialogCertificateBinding
 import com.example.cccc.databinding.FragmentCourseDetailsBinding
 import com.example.cccc.entity.Course
 import com.example.cccc.model.Lesson
+import com.example.cccc.service.ProgressService
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -32,8 +35,13 @@ import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.example.cccc.database.AppDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class CourseDetailsFragment : Fragment(), OnLessonCompletedListener {
+class CourseDetailsFragment : Fragment() {
 
     private var _binding: FragmentCourseDetailsBinding? = null
     private val binding get() = _binding!!
@@ -43,9 +51,12 @@ class CourseDetailsFragment : Fragment(), OnLessonCompletedListener {
     private lateinit var course: Course
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
+    private lateinit var appDatabase: AppDatabase
+    private lateinit var progressService: ProgressService
     
     private var completedLessons = mutableListOf<String>()
     private var totalLessons = 0
+    private var loadProgressJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,6 +72,8 @@ class CourseDetailsFragment : Fragment(), OnLessonCompletedListener {
         
         db = FirebaseFirestore.getInstance()
         auth = Firebase.auth
+        appDatabase = AppDatabase.getDatabase(requireContext())
+        progressService = ProgressService(appDatabase, db, auth)
         
         course = arguments?.getParcelable("course") ?: throw IllegalStateException("Course is required")
         
@@ -102,7 +115,8 @@ class CourseDetailsFragment : Fragment(), OnLessonCompletedListener {
                 title = video.title,
                 duration = "Unknown",
                 isLocked = false,
-                videoUrl = video.url
+                videoUrl = video.url,
+                isCompleted = completedLessons.contains(video.id.toString())
             )
         }
 
@@ -114,17 +128,30 @@ class CourseDetailsFragment : Fragment(), OnLessonCompletedListener {
         val userId = auth.currentUser?.uid ?: return
         val courseId = course.id
         
-        db.collection("users")
-            .document(userId)
-            .collection("course_progress")
-            .document(courseId.toString())
-            .get()
-            .addOnSuccessListener { document ->
-                val savedCompletedLessons = document.get("completed_lessons") as? List<String> ?: emptyList()
-                completedLessons.clear()
-                completedLessons.addAll(savedCompletedLessons)
-                updateProgressUI()
+        // Отменяем предыдущий job, если он существует
+        loadProgressJob?.cancel()
+        
+        loadProgressJob = lifecycleScope.launch {
+            try {
+                // Получаем прогресс из ProgressService
+                val progress = progressService.getCourseProgress(userId, courseId.toString())
+                progress.collect { progresses ->
+                    completedLessons.clear()
+                    completedLessons.addAll(progresses.filter { it.isCompleted }.map { it.lessonId })
+                    
+                    updateProgressUI()
+                    lessonAdapter.currentList.forEach { lesson ->
+                        lesson.isCompleted = completedLessons.contains(lesson.id)
+                    }
+                    lessonAdapter.notifyDataSetChanged()
+                }
+            } catch (e: Exception) {
+                // Игнорируем ошибку, если фрагмент уже уничтожен
+                if (isAdded) {
+                    e.printStackTrace()
+                }
             }
+        }
     }
 
     private fun updateProgressUI() {
@@ -136,7 +163,7 @@ class CourseDetailsFragment : Fragment(), OnLessonCompletedListener {
         
         binding.progressIndicator.progress = progress
         binding.progressText.text = "$progress%"
-        binding.progressDescription.text = "$completedLessons of $totalLessons lessons completed"
+        binding.progressDescription.text = "${completedLessons.size} of $totalLessons lessons completed"
 
         binding.getCertificateButton.visibility = if (progress >= 100) View.VISIBLE else View.GONE
     }
@@ -188,10 +215,6 @@ class CourseDetailsFragment : Fragment(), OnLessonCompletedListener {
             saveCertificate(certificateBitmap)
         }
 
-//        dialogBinding.shareButton.setOnClickListener {
-//            shareCertificate(certificateBitmap)
-//        }
-
         dialog.show()
     }
 
@@ -221,36 +244,34 @@ class CourseDetailsFragment : Fragment(), OnLessonCompletedListener {
         // Рисуем заголовок
         val title = "Certificate of Completion"
         val titleWidth = textPaint.measureText(title)
-        canvas.drawText(title, (width - titleWidth) / 2, 270f, textPaint) // Было 200f, стало 250f
+        canvas.drawText(title, (width - titleWidth) / 2, 270f, textPaint)
 
         // Рисуем имя пользователя
         textPaint.textSize = 36f
         val userName = auth.currentUser?.displayName ?: "Student"
         val userNameWidth = textPaint.measureText(userName)
-        canvas.drawText(userName, (width - userNameWidth) / 2, 350f, textPaint) // Было 300f, стало 350f
+        canvas.drawText(userName, (width - userNameWidth) / 2, 350f, textPaint)
 
         // Рисуем текст о завершении курса
         textPaint.textSize = 24f
         val courseText = "has successfully completed the course"
         val courseTextWidth = textPaint.measureText(courseText)
-        canvas.drawText(courseText, (width - courseTextWidth) / 2, 400f, textPaint) // Было 350f, стало 400f
+        canvas.drawText(courseText, (width - courseTextWidth) / 2, 400f, textPaint)
 
         // Рисуем название курса
         textPaint.textSize = 32f
         val courseNameWidth = textPaint.measureText(course.name)
-        canvas.drawText(course.name, (width - courseNameWidth) / 2, 450f, textPaint) // Было 400f, стало 450f
+        canvas.drawText(course.name, (width - courseNameWidth) / 2, 450f, textPaint)
 
         // Рисуем дату
         textPaint.textSize = 20f
         val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault())
         val date = dateFormat.format(Date())
         val dateWidth = textPaint.measureText(date)
-        canvas.drawText(date, (width - dateWidth) / 2, 550f, textPaint) // Было 500f, стало 550f
+        canvas.drawText(date, (width - dateWidth) / 2, 550f, textPaint)
 
         return bitmap
     }
-
-
 
     private fun saveCertificate(bitmap: Bitmap) {
         try {
@@ -277,50 +298,15 @@ class CourseDetailsFragment : Fragment(), OnLessonCompletedListener {
         }
     }
 
-
-    override fun onLessonCompleted(lessonId: String) {
-        // Обновляем список завершенных уроков
-        if (!completedLessons.contains(lessonId)) {
-            completedLessons.add(lessonId)
-            
-            // Обновляем статус урока в списке
-            val currentList = lessonAdapter.currentList.toMutableList()
-            currentList.find { it.id == lessonId }?.let { lesson ->
-                lesson.isCompleted = true
-                lessonAdapter.submitList(currentList)
-            }
-            
-            // Обновляем UI прогресса
-            updateProgressUI()
-            
-            // Сохраняем прогресс в Firestore
-            val userId = auth.currentUser?.uid ?: return
-            val courseId = course.id
-            
-            db.collection("users")
-                .document(userId)
-                .collection("course_progress")
-                .document(courseId.toString())
-                .set(mapOf(
-                    "completed_lessons" to completedLessons,
-                    "last_updated" to System.currentTimeMillis()
-                ))
-        }
-    }
-
-    fun onCourseProgressUpdated(progress: Int) {
-        // Обновляем прогресс курса в UI
-        binding.progressIndicator.progress = progress
-        binding.progressText.text = "$progress%"
-        binding.progressDescription.text = "$completedLessons of $totalLessons lessons completed"
-    }
-
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        // Отменяем job при уничтожении view
+        loadProgressJob?.cancel()
+        loadProgressJob = null
         _binding = null
     }
 
@@ -333,8 +319,4 @@ class CourseDetailsFragment : Fragment(), OnLessonCompletedListener {
             }
         }
     }
-} 
-
-interface OnLessonCompletedListener {
-    fun onLessonCompleted(lessonId: String)
 }
