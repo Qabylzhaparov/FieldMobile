@@ -18,6 +18,7 @@ import com.example.cccc.database.CourseRepositoryLocal
 import com.example.cccc.entity.Course
 import com.example.cccc.model.CourseCategory
 import com.example.cccc.model.CourseFilter
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -32,6 +33,7 @@ class CoursesFragment : Fragment() {
     private var currentCategory: CourseCategory? = null
     private var currentSearchQuery: String = ""
     private var allCourses = listOf<Course>()
+    private var priceSortState = 0 // 0: no sort, 1: ascending, 2: descending
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,7 +53,41 @@ class CoursesFragment : Fragment() {
         setupCategoryButtons()
         setupSearch()
         setupFilterDialog()
+        setupPriceSortButton()
 //        loadCourses()
+    }
+
+    private fun setupPriceSortButton() {
+        binding.btnPriceSort.setOnClickListener {
+            priceSortState = (priceSortState + 1) % 3
+            updatePriceSortButton()
+            applyFilters()
+        }
+    }
+
+    private fun updatePriceSortButton() {
+        val iconRes = when (priceSortState) {
+            0 -> R.drawable.ic_sort
+            1 -> R.drawable.ic_up
+            2 -> R.drawable.ic_down
+            else -> R.drawable.ic_sort
+        }
+
+        binding.btnPriceSort.setIconResource(iconRes)
+
+        val isSelected = priceSortState != 0
+        binding.btnPriceSort.setBackgroundColor(
+            ContextCompat.getColor(
+                requireContext(),
+                if (isSelected) R.color.blue else R.color.gray
+            )
+        )
+        binding.btnPriceSort.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                if (isSelected) R.color.white else R.color.blue
+            )
+        )
     }
 
     private fun setupRecyclerView() {
@@ -114,7 +150,6 @@ class CoursesFragment : Fragment() {
         binding.ivFilter.setOnClickListener {
             val filterFragment = SearchFilterFragment()
             filterFragment.setFilterAppliedListener { priceRange ->
-                // Применяем дополнительные фильтры
                 applyAdvancedFilters(priceRange)
             }
             filterFragment.show(childFragmentManager, SearchFilterFragment.TAG)
@@ -158,7 +193,7 @@ class CoursesFragment : Fragment() {
             button.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
-                    if (isSelected) R.color.gray else R.color.blue
+                    if (isSelected) R.color.white else R.color.blue
                 )
             )
         }
@@ -196,6 +231,13 @@ class CoursesFragment : Fragment() {
             CourseFilter.NEW -> filteredCourses.sortedByDescending { it.isNew }
         }
 
+        // Применяем сортировку по цене
+        filteredCourses = when (priceSortState) {
+            1 -> filteredCourses.sortedBy { it.price }
+            2 -> filteredCourses.sortedByDescending { it.price }
+            else -> filteredCourses
+        }
+
         if (currentSearchQuery.isNotEmpty()) {
             filteredCourses = filteredCourses.filter {
                 it.name.contains(currentSearchQuery, ignoreCase = true) ||
@@ -221,6 +263,13 @@ class CoursesFragment : Fragment() {
             CourseFilter.ALL -> filteredCourses
             CourseFilter.POPULAR -> filteredCourses.sortedByDescending { it.isPopular }
             CourseFilter.NEW -> filteredCourses.sortedByDescending { it.isNew }
+        }
+
+        // Применяем сортировку по цене
+        filteredCourses = when (priceSortState) {
+            1 -> filteredCourses.sortedBy { it.price }
+            2 -> filteredCourses.sortedByDescending { it.price }
+            else -> filteredCourses
         }
 
         if (currentSearchQuery.isNotEmpty()) {
