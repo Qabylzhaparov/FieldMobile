@@ -20,33 +20,32 @@ import com.example.cccc.model.CourseCategory
 import com.example.cccc.model.CourseFilter
 import com.google.android.material.card.MaterialCardView
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 
 class CoursesFragment : Fragment() {
 
-    private var _binding: FragmentCoursesBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentCoursesBinding
     private lateinit var courseAdapter: CourseAdapter
     private lateinit var db: FirebaseFirestore
-    
+
     private var currentFilter = CourseFilter.ALL
     private var currentCategory: CourseCategory? = null
     private var currentSearchQuery: String = ""
     private var allCourses = listOf<Course>()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCoursesBinding.inflate(inflater, container, false)
+        binding = FragmentCoursesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         db = FirebaseFirestore.getInstance()
-        
+
         setupRecyclerView()
         setupFilterButtons()
         setupCategoryButtons()
@@ -68,7 +67,6 @@ class CoursesFragment : Fragment() {
         allCourses = CourseRepositoryLocal.getCourses()
         applyFilters()
     }
-
 
     private fun setupFilterButtons() {
         val buttons = listOf(
@@ -137,7 +135,7 @@ class CoursesFragment : Fragment() {
 
     private fun updateFilterButtons(selectedFilter: CourseFilter) {
         currentFilter = selectedFilter
-        
+
         val buttons = listOf(
             binding.btnAll,
             binding.btnPopular,
@@ -160,7 +158,7 @@ class CoursesFragment : Fragment() {
             button.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
-                    if (isSelected) R.color.white else R.color.gray
+                    if (isSelected) R.color.gray else R.color.blue
                 )
             )
         }
@@ -168,8 +166,7 @@ class CoursesFragment : Fragment() {
 
     private fun updateCategorySelection(category: CourseCategory) {
         currentCategory = if (currentCategory == category) null else category
-        
-        // Обновляем визуальное состояние категорий
+
         val categoryViews = listOf(
             binding.categoriesScroll.getChildAt(0).findViewById<CardView>(R.id.categoryLanguage),
             binding.categoriesScroll.getChildAt(0).findViewById<CardView>(R.id.categoryPainting),
@@ -184,25 +181,21 @@ class CoursesFragment : Fragment() {
                 0
             }
         }
-
     }
 
     private fun applyFilters() {
         var filteredCourses = allCourses
 
-        // Применяем фильтр категории
         if (currentCategory != null) {
             filteredCourses = filteredCourses.filter { it.category == currentCategory }
         }
 
-        // Применяем основной фильтр
         filteredCourses = when (currentFilter) {
             CourseFilter.ALL -> filteredCourses
-            CourseFilter.POPULAR -> filteredCourses.sortedByDescending { it.isPopular}
+            CourseFilter.POPULAR -> filteredCourses.sortedByDescending { it.isPopular }
             CourseFilter.NEW -> filteredCourses.sortedByDescending { it.isNew }
         }
 
-        // Применяем поисковый запрос
         if (currentSearchQuery.isNotEmpty()) {
             filteredCourses = filteredCourses.filter {
                 it.name.contains(currentSearchQuery, ignoreCase = true) ||
@@ -216,12 +209,10 @@ class CoursesFragment : Fragment() {
     private fun applyAdvancedFilters(priceRange: Pair<Float, Float>) {
         var filteredCourses = allCourses
 
-        // Применяем фильтр по цене
         filteredCourses = filteredCourses.filter {
             it.price in priceRange.first..priceRange.second
         }
 
-        // Применяем остальные фильтры
         if (currentCategory != null) {
             filteredCourses = filteredCourses.filter { it.category == currentCategory }
         }
@@ -247,10 +238,5 @@ class CoursesFragment : Fragment() {
             putParcelable("course", course)
         }
         findNavController().navigate(R.id.action_courses_to_courseDetails, bundle)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

@@ -56,7 +56,6 @@ class ChatFragment : Fragment() {
     }
 
     private fun setupToolbar() {
-        // Убираем строку добавления меню здесь
         binding.toolbar.setOnMenuItemClickListener { item ->
             if (item.itemId == R.id.action_clear_chat) {
                 clearChat()
@@ -70,7 +69,7 @@ class ChatFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear() // Очистка перед добавлением нового меню
+        menu.clear()
         inflater.inflate(R.menu.chat_menu, menu)
     }
 
@@ -130,12 +129,27 @@ class ChatFragment : Fragment() {
             try {
                 val url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBpRcrcvZPH7f1orljH5o9BN2J8I28ZVg0"
 
+                // Создаем историю сообщений для контекста
+                val conversationHistory = messages.joinToString("\n") { 
+                    "${if (it.isFromUser) "User" else "Assistant"}: ${it.text}"
+                }
+
                 val jsonRequest = JSONObject().apply {
                     put("contents", JSONArray().apply {
                         put(JSONObject().apply {
                             put("parts", JSONArray().apply {
                                 put(JSONObject().apply {
-                                    put("text", "You are AI assistant in my learnhub(online courses app). Act like you are assistant and dont long. Write in plain text without formatting, without asterisks, underlines, or other symbols. Here is message: $userMessage")
+                                    put("text", """
+                                        You are AI assistant in my learnhub(online courses app). 
+                                        Act like you are assistant and dont be too long. 
+                                        Write in plain text without formatting, without asterisks, underlines, or other symbols.
+                                        
+                                        Here is our conversation history:
+                                        $conversationHistory
+                                        
+                                        Here is the latest message:
+                                        $userMessage
+                                    """.trimIndent())
                                 })
                             })
                         })
