@@ -319,4 +319,4 @@ class CourseDetailsFragment : Fragment() {
             }
         }
     }
-}
+} 

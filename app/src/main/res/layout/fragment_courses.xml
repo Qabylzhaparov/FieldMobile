@@ -125,26 +125,28 @@
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp">
 
-                    <LinearLayout
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                        android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:src="@drawable/placeholder" />
+                            android:layout_width="171dp"
+                            android:layout_height="111dp"
+                            android:layout_marginTop="12dp"
+                            android:src="@drawable/mobile2" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="92dp"
+                            android:layout_marginStart="16dp"
+                            android:fontFamily="@font/poppins_regular"
                             android:text="Mobile developing"
                             android:textColor="#212121"
                             android:textSize="14sp" />
-                    </LinearLayout>
+                    </FrameLayout>
 
                 </androidx.cardview.widget.CardView>
 
@@ -159,26 +161,28 @@
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp">
 
-                    <LinearLayout
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                        android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:src="@drawable/placeholder" />
+                            android:layout_width="160dp"
+                            android:layout_height="124dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/backend2" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="180dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="92dp"
+                            android:fontFamily="@font/poppins_regular"
                             android:text="Backend Developing"
                             android:textColor="#212121"
-                            android:textSize="14sp" />
-                    </LinearLayout>
+                            android:textSize="13sp" />
+                    </FrameLayout>
 
                 </androidx.cardview.widget.CardView>
 
@@ -193,26 +197,27 @@
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp">
 
-                    <LinearLayout
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                        android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:src="@drawable/placeholder" />
+                            android:layout_width="159dp"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/data2" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="92dp"
+                            android:layout_marginStart="30dp"
+                            android:fontFamily="@font/poppins_regular"
                             android:text="Data analysis"
                             android:textColor="#212121"
                             android:textSize="14sp" />
-                    </LinearLayout>
+                    </FrameLayout>
 
                 </androidx.cardview.widget.CardView>
 
@@ -222,30 +227,31 @@
                     android:layout_width="160dp"
                     android:layout_height="120dp"
                     android:tag="WEB_PROGRAMMING"
-                    app:cardBackgroundColor="#FFE8EA"
+                    app:cardBackgroundColor="#e8eaff"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp">
 
-                    <LinearLayout
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                        android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:src="@drawable/placeholder" />
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/web2" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="92dp"
+                            android:layout_marginStart="4dp"
+                            android:fontFamily="@font/poppins_regular"
                             android:text="Web programming"
                             android:textColor="#212121"
-                            android:textSize="14sp" />
-                    </LinearLayout>
+                            android:textSize="13sp" />
+                    </FrameLayout>
 
                 </androidx.cardview.widget.CardView>
 
