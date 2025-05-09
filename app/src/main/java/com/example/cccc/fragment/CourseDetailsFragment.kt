@@ -36,6 +36,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import com.example.cccc.database.AppDatabase
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -183,7 +184,13 @@ class CourseDetailsFragment : Fragment() {
     private fun setupClickListeners() {
         with(binding) {
             buyButton.setOnClickListener {
-                showToast("Processing purchase...")
+                val bundle = Bundle()
+                bundle.putInt("courseId", course.id) // передаём ID курса
+
+                findNavController().navigate(R.id.action_courseDetails_to_payment, bundle)
+
+                val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+                bottomNav.visibility = View.GONE
             }
 
             favoriteButton.setOnClickListener {

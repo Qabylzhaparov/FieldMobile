@@ -23,7 +23,7 @@ data class Course(
     val tests: List<Test>,
     val rating: Double,
     val isNew: Boolean,
-    val isPurchased: Boolean = false,
+    var isPurchased: Boolean = false,
     val lastSynced: Date = Date()
 ) : Parcelable
 

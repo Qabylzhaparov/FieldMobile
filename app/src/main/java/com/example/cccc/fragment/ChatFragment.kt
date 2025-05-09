@@ -1,6 +1,7 @@
 package com.example.cccc.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -12,7 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cccc.R
 import com.example.cccc.adapter.MessageAdapter
 import com.example.cccc.databinding.FragmentChatBinding
+import com.example.cccc.firetest.FireTestParser
 import com.example.cccc.model.Message
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
@@ -48,6 +51,22 @@ class ChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+//        val firestore = FirebaseFirestore.getInstance()
+//        firestore.collection("courses").document("kotlin_basics")
+//            .get()
+//            .addOnSuccessListener { document ->
+//                if (document.exists()) {
+//                    val data = document.data
+//                    if (data != null) {
+//                        val lessons = FireTestParser.parseLessons(data)
+//                        Log.d("TEST_FIREBASE", "LESSONS: $lessons")
+//                    }
+//                }
+//            }
+//            .addOnFailureListener {
+//                Log.e("TEST_FIREBASE", "Error loading", it)
+//            }
 
         setupToolbar()
         setupRecyclerView()
