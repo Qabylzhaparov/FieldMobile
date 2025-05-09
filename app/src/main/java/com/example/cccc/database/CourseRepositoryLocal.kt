@@ -28,7 +28,7 @@ object CourseRepositoryLocal {
                     Test(id = 1, question = "Что такое Kotlin?", options = listOf("Язык", "Среда", "Фреймворк"), correctAnswer = 0)
                 ),
                 isNew = false,
-                isPopular = false
+                rating = 4.5
             ),
             Course(
                 id = 2,
@@ -45,7 +45,7 @@ object CourseRepositoryLocal {
                     Test(id = 2, question = "Что такое Activity?", options = listOf("Класс", "Файл", "Метод"), correctAnswer = 1)
                 ),
                 isNew = false,
-                isPopular = true
+                rating = 4.3
             ),
             Course(
                 id = 3,
@@ -67,7 +67,7 @@ object CourseRepositoryLocal {
                     Test(id = 3, question = "Какой язык используется в Jetpack Compose?", options = listOf("Java", "Kotlin", "Dart"), correctAnswer = 1)
                 ),
                 isNew = true,
-                isPopular = false
+                rating = 4.2
             ),
             Course(
                 id = 4,
@@ -89,7 +89,7 @@ object CourseRepositoryLocal {
                     Test(id = 4, question = "Какой язык используется в Spring Boot?", options = listOf("C++", "Python", "Java"), correctAnswer = 2)
                 ),
                 isNew = true,
-                isPopular = false
+                rating = 3.8
             ),
             Course(
                 id = 5,
@@ -111,8 +111,8 @@ object CourseRepositoryLocal {
                     Test(id = 5, question = "Какой модуль используется для работы с таблицами?", options = listOf("Pandas", "NumPy", "Matplotlib"), correctAnswer = 0)
                 ),
                 isNew = false,
-                isPopular = true
-            ),
+                rating = 4.9
+                ),
             Course(
                 id = 6,
                 name = "Основы машинного обучения",
@@ -133,7 +133,7 @@ object CourseRepositoryLocal {
                     Test(id = 6, question = "Какой метод используется для классификации?", options = listOf("KNN", "SQL", "HTML"), correctAnswer = 0)
                 ),
                 isNew = false,
-                isPopular = false
+                rating = 3.5
             ),
             Course(
                 id = 7,
@@ -155,7 +155,7 @@ object CourseRepositoryLocal {
                     Test(id = 7, question = "Что такое DOM?", options = listOf("Document Object Model", "Data Object Model", "Digital Object Model"), correctAnswer = 0)
                 ),
                 isNew = false,
-                isPopular = true
+                rating = 4.7
             ),
             Course(
                 id = 8,
@@ -177,7 +177,7 @@ object CourseRepositoryLocal {
                     Test(id = 8, question = "Для чего используется Redux?", options = listOf("Управление состоянием", "Маршрутизация", "Стилизация"), correctAnswer = 0)
                 ),
                 isNew = true,
-                isPopular = true
+                rating = 4.5
             ),
             Course(
                 id = 9,
@@ -199,7 +199,7 @@ object CourseRepositoryLocal {
                     Test(id = 9, question = "Что такое контейнер?", options = listOf("Изолированная среда", "База данных", "Фреймворк"), correctAnswer = 0)
                 ),
                 isNew = false,
-                isPopular = false
+                rating =  4.5
             ),
             Course(
                 id = 10,
@@ -221,7 +221,7 @@ object CourseRepositoryLocal {
                     Test(id = 10, question = "На каком языке пишут Flutter приложения?", options = listOf("Dart", "JavaScript", "Swift"), correctAnswer = 0)
                 ),
                 isNew = true,
-                isPopular = true
+                rating = 4.6
             )
         )
     }

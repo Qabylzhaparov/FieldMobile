@@ -227,7 +227,7 @@ class CoursesFragment : Fragment() {
 
         filteredCourses = when (currentFilter) {
             CourseFilter.ALL -> filteredCourses
-            CourseFilter.POPULAR -> filteredCourses.sortedByDescending { it.isPopular }
+            CourseFilter.POPULAR -> filteredCourses.sortedByDescending { it.rating }
             CourseFilter.NEW -> filteredCourses.sortedByDescending { it.isNew }
         }
 
@@ -261,7 +261,7 @@ class CoursesFragment : Fragment() {
 
         filteredCourses = when (currentFilter) {
             CourseFilter.ALL -> filteredCourses
-            CourseFilter.POPULAR -> filteredCourses.sortedByDescending { it.isPopular }
+            CourseFilter.POPULAR -> filteredCourses.sortedByDescending { it.rating }
             CourseFilter.NEW -> filteredCourses.sortedByDescending { it.isNew }
         }
 

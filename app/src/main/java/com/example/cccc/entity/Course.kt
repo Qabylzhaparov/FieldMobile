@@ -21,7 +21,7 @@ data class Course(
     val category: CourseCategory,
     val videos: List<Video>,
     val tests: List<Test>,
-    val isPopular: Boolean,
+    val rating: Double,
     val isNew: Boolean,
     val isPurchased: Boolean = false,
     val lastSynced: Date = Date()
