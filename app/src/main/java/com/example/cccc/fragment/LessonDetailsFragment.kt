@@ -1,30 +1,36 @@
 package com.example.cccc.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.cccc.R
 import com.example.cccc.database.AppDatabase
+import com.example.cccc.database.CourseRepositoryLocal
 import com.example.cccc.databinding.FragmentLessonDetailsBinding
+import com.example.cccc.entity.Video
 import com.example.cccc.model.Test
 import com.example.cccc.model.TestRepository
 import com.example.cccc.service.ProgressService
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import kotlinx.coroutines.launch
 
 class LessonDetailsFragment : Fragment() {
     private var _binding: FragmentLessonDetailsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var player: ExoPlayer
+    private lateinit var youTubePlayer: YouTubePlayerView
     private lateinit var progressService: ProgressService
     private lateinit var appDatabase: AppDatabase
     private lateinit var firestore: FirebaseFirestore
@@ -54,7 +60,7 @@ class LessonDetailsFragment : Fragment() {
         val courseId = arguments?.getString("courseId") ?: return
 
         setupToolbar()
-        setupPlayer(lessonId)
+        setupYouTubePlayer(lessonId)
         setupTest(lessonId)
         loadLessonProgress(lessonId, courseId)
         setupClickListeners()
@@ -66,33 +72,51 @@ class LessonDetailsFragment : Fragment() {
         }
     }
 
-    private fun setupPlayer(lessonId: String) {
-        player = ExoPlayer.Builder(requireContext()).build()
-        binding.playerView.player = player
+    private fun setupYouTubePlayer(lessonId: String) {
 
-        // Загружаем видео из Firestore
-        firestore.collection("lessons")
-            .document(lessonId)
-            .get()
-            .addOnSuccessListener { document ->
-                val videoUrl = document.getString("videoUrl") ?: return@addOnSuccessListener
-                val title = document.getString("title") ?: ""
-                
-                binding.videoTitle.text = title
-                val mediaItem = MediaItem.fromUri(videoUrl)
-                player.setMediaItem(mediaItem)
-                player.prepare()
-                player.playWhenReady = true
+        val video = arguments?.getParcelable<Video>("video") ?: return
 
-                // Отслеживаем завершение видео
-                player.addListener(object : com.google.android.exoplayer2.Player.Listener {
-                    override fun onPlaybackStateChanged(playbackState: Int) {
-                        if (playbackState == com.google.android.exoplayer2.Player.STATE_ENDED) {
+        binding.videoTitle.text = video.title
+
+        val videoId = extractVideoId(video.url)
+        if (videoId == null) {
+            Toast.makeText(requireContext(), "Неверный формат URL видео", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        youTubePlayer = binding.youtubePlayer // инициализация
+        lifecycle.addObserver(youTubePlayer)
+        youTubePlayer.enableAutomaticInitialization = false
+
+        youTubePlayer.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+            override fun onReady(youTubePlayer: YouTubePlayer) {
+                youTubePlayer.loadVideo(videoId, 0f)
+
+                youTubePlayer.addListener(object : AbstractYouTubePlayerListener() {
+                    override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
+                        if (state == PlayerConstants.PlayerState.ENDED) {
                             updateVideoProgress(lessonId)
                         }
                     }
                 })
             }
+        })
+    }
+
+    private fun extractVideoId(url: String): String? {
+        val patterns = listOf(
+            "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C\u200B2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*",
+            "(?<=v=)[^#\\&\\?\\n]*",
+            "(?<=youtu.be/)[^#\\&\\?\\n]*"
+        )
+
+        for (pattern in patterns) {
+            val matcher = java.util.regex.Pattern.compile(pattern).matcher(url)
+            if (matcher.find()) {
+                return matcher.group()
+            }
+        }
+        return null
     }
 
     private fun setupTest(lessonId: String) {
@@ -113,6 +137,8 @@ class LessonDetailsFragment : Fragment() {
         }
     }
 
+    val Int.dp: Int get() = (this * resources.displayMetrics.density).toInt()
+
     private fun showNextQuestion() {
         test?.let { test ->
             if (currentQuestionIndex < test.questions.size) {
@@ -120,22 +146,25 @@ class LessonDetailsFragment : Fragment() {
                     questionCounter.text = "Question ${currentQuestionIndex + 1}/${test.questions.size}"
                     questionText.text = test.questions[currentQuestionIndex].text
 
-                    // Очищаем предыдущие ответы
                     answerOptions.removeAllViews()
 
-                    // Добавляем варианты ответов
                     test.questions[currentQuestionIndex].options.forEachIndexed { index, option ->
                         val radioButton = RadioButton(requireContext()).apply {
                             id = View.generateViewId()
                             text = option
-                            setPadding(16, 16, 16, 16)
+                            setPadding(16, 32, 16, 32)
                             setBackgroundResource(R.drawable.bg_option)
                             setTextColor(resources.getColor(android.R.color.black, null))
+                            layoutParams = RadioGroup.LayoutParams(
+                                RadioGroup.LayoutParams.MATCH_PARENT,
+                                RadioGroup.LayoutParams.WRAP_CONTENT
+                            ).apply {
+                                bottomMargin = 8.dp // если нужен отступ, используйте extension для dp
+                            }
                         }
                         answerOptions.addView(radioButton)
                     }
 
-                    // Обновляем состояние кнопок навигации
                     previousButton.isEnabled = currentQuestionIndex > 0
                     nextButton.isEnabled = answerOptions.checkedRadioButtonId != -1
                 }
@@ -267,7 +296,7 @@ class LessonDetailsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        player.release()
+        youTubePlayer.release()
         _binding = null
     }
 }

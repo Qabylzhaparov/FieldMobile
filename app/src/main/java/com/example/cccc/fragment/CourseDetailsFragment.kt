@@ -110,9 +110,9 @@ class CourseDetailsFragment : Fragment() {
             } else {
                 course.videos.find { it.id.toString() == lesson.id }?.let { video ->
                     val bundle = Bundle().apply {
-                        putParcelable("video", video)
                         putString("lessonId", lesson.id)
                         putString("courseId", course.id.toString())
+                        putParcelable("video", video)
                     }
                     findNavController().navigate(R.id.action_courseDetails_to_lessonDetails, bundle)
                 }

@@ -17,7 +17,7 @@ object CourseRepositoryLocal {
                 price = 19.99,
                 category = CourseCategory.PROGRAMMING,
                 videos = listOf(
-                    Video(id = 1, course = 1, title = "Введение в Kotlin", url = "https://www.youtube.com/watch?v=H_oGi8uuDpA"),
+                    Video(id = 1, course = 1, title = "Введение в Kotlin", url = "https://www.youtube.com/watch?v=RSgGKa0vP84&list=PL9ooVrP1hQOFUMO28LGDXqzdCeeo60sAL&index=3&ab_channel=edureka%21"),
                     Video(id = 2, course = 1, title = "Переменные и типы данных", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
                     Video(id = 3, course = 1, title = "Функции в Kotlin", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
                     Video(id = 4, course = 1, title = "Классы и объекты", url = "https://www.youtube.com/watch?v=8Xg7E9shq0U"),
