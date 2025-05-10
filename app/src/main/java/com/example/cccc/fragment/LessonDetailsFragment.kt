@@ -21,6 +21,7 @@ import com.example.cccc.model.TestRepository
 import com.example.cccc.service.ProgressService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
@@ -38,6 +39,8 @@ class LessonDetailsFragment : Fragment() {
     private var test: Test? = null
     private var currentQuestionIndex = 0
     private val answers = mutableListOf<Int>()
+    private var isVideoWatched = false
+    private var isTestPassed = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -152,14 +155,14 @@ class LessonDetailsFragment : Fragment() {
                         val radioButton = RadioButton(requireContext()).apply {
                             id = View.generateViewId()
                             text = option
-                            setPadding(16, 32, 16, 32)
+                            setPadding(16, 26, 16, 26)
                             setBackgroundResource(R.drawable.bg_option)
                             setTextColor(resources.getColor(android.R.color.black, null))
                             layoutParams = RadioGroup.LayoutParams(
                                 RadioGroup.LayoutParams.MATCH_PARENT,
                                 RadioGroup.LayoutParams.WRAP_CONTENT
                             ).apply {
-                                bottomMargin = 8.dp // если нужен отступ, используйте extension для dp
+                                bottomMargin = 8.dp
                             }
                         }
                         answerOptions.addView(radioButton)
@@ -233,14 +236,9 @@ class LessonDetailsFragment : Fragment() {
                 val courseId = arguments?.getString("courseId") ?: return
                 val userId = auth.currentUser?.uid ?: return
 
-                lifecycleScope.launch {
-                    progressService.updateLessonProgress(
-                        userId = userId,
-                        courseId = courseId,
-                        lessonId = lessonId,
-                        isCompleted = score >= totalQuestions * 0.7,
-                        testsPassed = 1
-                    )
+                if (score >= totalQuestions * 0.7) {
+                    isTestPassed = true
+                    checkLessonCompletion(lessonId)
                 }
             }
         }
@@ -263,17 +261,57 @@ class LessonDetailsFragment : Fragment() {
     }
 
     private fun updateVideoProgress(lessonId: String) {
+        isVideoWatched = true
+        checkLessonCompletion(lessonId)
+    }
+
+    private fun checkLessonCompletion(lessonId: String) {
         val courseId = arguments?.getString("courseId") ?: return
         val userId = auth.currentUser?.uid ?: return
 
-        lifecycleScope.launch {
-            progressService.updateLessonProgress(
-                userId = userId,
-                courseId = courseId,
-                lessonId = lessonId,
-                isCompleted = true,
-                videosWatched = 1
-            )
+        if (isVideoWatched && isTestPassed) {
+            lifecycleScope.launch {
+                val userDoc = firestore.collection("users").document(userId)
+                userDoc.get().addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        userDoc.update(mapOf(
+                            "progress" to mapOf(
+                                "courses" to mapOf(
+                                    courseId to mapOf(
+                                        "lessons" to mapOf(
+                                            lessonId to mapOf(
+                                                "isCompleted" to true,
+                                                "videosWatched" to 1,
+                                                "testsPassed" to 1
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        ))
+                        binding.completionMessage.visibility = View.VISIBLE
+                        binding.completionMessage.text = "Урок завершен"
+                    } else {
+                        userDoc.set(mapOf(
+                            "progress" to mapOf(
+                                "courses" to mapOf(
+                                    courseId to mapOf(
+                                        "lessons" to mapOf(
+                                            lessonId to mapOf(
+                                                "isCompleted" to true,
+                                                "videosWatched" to 1,
+                                                "testsPassed" to 1
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        ), SetOptions.merge())
+                        binding.completionMessage.visibility = View.VISIBLE
+                        binding.completionMessage.text = "Урок завершен"
+                    }
+                }
+            }
         }
     }
 
