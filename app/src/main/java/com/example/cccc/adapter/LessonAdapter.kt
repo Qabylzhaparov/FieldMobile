@@ -3,6 +3,7 @@ package com.example.cccc.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -27,8 +28,7 @@ class LessonAdapter(
     inner class LessonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val lessonNumber: TextView = itemView.findViewById(R.id.lessonNumber)
         private val lessonTitle: TextView = itemView.findViewById(R.id.lessonTitle)
-        private val lockIcon: View = itemView.findViewById(R.id.lockIcon)
-        private val checkIcon: View = itemView.findViewById(R.id.checkIcon)
+        private val lessonIcon: ImageView = itemView.findViewById(R.id.lessonIcon)
 
         init {
             itemView.setOnClickListener {
@@ -41,16 +41,12 @@ class LessonAdapter(
             lessonNumber.text = "Lesson ${lesson.number}"
             lessonTitle.text = lesson.title
 
-            // Обновляем статус урока
             if (lesson.isLocked) {
-                lockIcon.visibility = View.VISIBLE
-                checkIcon.visibility = View.GONE
+                lessonIcon.setImageResource(R.drawable.ic_lock)
             } else if (lesson.isCompleted) {
-                lockIcon.visibility = View.GONE
-                checkIcon.visibility = View.VISIBLE
+                lessonIcon.setImageResource(R.drawable.ic_check)
             } else {
-                lockIcon.visibility = View.GONE
-                checkIcon.visibility = View.GONE
+                lessonIcon.setImageResource(R.drawable.ic_play)
             }
         }
     }

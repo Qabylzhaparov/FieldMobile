@@ -52,15 +52,15 @@
             app:layout_constraintStart_toEndOf="@id/lessonIcon"
             app:layout_constraintTop_toBottomOf="@id/lessonNumber" />
 
-        <ImageView
-            android:id="@+id/lockIcon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_lock"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="#757575" />
+<!--        <ImageView-->
+<!--            android:id="@+id/lockIcon"-->
+<!--            android:layout_width="24dp"-->
+<!--            android:layout_height="24dp"-->
+<!--            android:src="@drawable/ic_lock"-->
+<!--            android:visibility="gone"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:tint="#757575" />-->
 
         <ImageView
             android:id="@+id/checkIcon"

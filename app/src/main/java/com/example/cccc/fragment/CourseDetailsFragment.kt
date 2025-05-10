@@ -9,11 +9,13 @@ import android.graphics.Typeface
 import android.media.MediaScannerConnection
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,6 +42,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 class CourseDetailsFragment : Fragment() {
@@ -81,8 +84,18 @@ class CourseDetailsFragment : Fragment() {
         setupToolbar()
         setupRecyclerView()
         loadCourseProgress()
+        checkPurchaseState()
         updateUI()
         setupClickListeners()
+
+        // Listen for payment result
+        setFragmentResultListener("payment_result") { _, bundle ->
+            if (bundle.getBoolean("unlockLessons", false)) {
+                Log.d("CourseDetailsFragment", "Received payment result: true")
+                course.isPurchased = true
+                refreshLessons()
+            }
+        }
     }
 
     private fun setupToolbar() {
@@ -106,24 +119,11 @@ class CourseDetailsFragment : Fragment() {
                 }
             }
         }
+
         binding.lessonsRecyclerView.adapter = lessonAdapter
-
-        // Конвертируем List<Video> в List<Lesson>
-        val lessonList = course.videos.mapIndexed { index, video ->
-            Lesson(
-                id = video.id.toString(),
-                number = index + 1,
-                title = video.title,
-                duration = "Unknown",
-                isLocked = false,
-                videoUrl = video.url,
-                isCompleted = completedLessons.contains(video.id.toString())
-            )
-        }
-
-        lessonAdapter.submitList(lessonList)
-        totalLessons = lessonList.size
+        refreshLessons() // загружаем список
     }
+
 
     private fun loadCourseProgress() {
         val userId = auth.currentUser?.uid ?: return
@@ -317,8 +317,70 @@ class CourseDetailsFragment : Fragment() {
         _binding = null
     }
 
+    fun unlockAllLessons() {
+        Log.d("CourseDetailsFragment", "unlockAllLessons() called")  // Логируем вызов метода
+        val updatedLessons = lessonAdapter.currentList.map { lesson ->
+            lesson.copy(isLocked = false)
+        }
+        lessonAdapter.submitList(updatedLessons)
+        binding.buyButton.visibility = View.GONE
+
+        // Force update the UI
+        lessonAdapter.notifyDataSetChanged()
+
+        // Логируем обновление UI
+        Log.d("CourseDetailsFragment", "Lessons unlocked and UI refreshed")
+    }
+
+
+
+    private fun refreshLessons() {
+        val lessonList = course.videos.mapIndexed { index, video ->
+            Lesson(
+                id = video.id.toString(),
+                number = index + 1,
+                title = video.title,
+                duration = "Unknown",
+                isLocked = !course.isPurchased && index >= 3,
+                videoUrl = video.url,
+                isCompleted = completedLessons.contains(video.id.toString())
+            )
+        }
+
+        lessonAdapter.submitList(lessonList)
+        totalLessons = lessonList.size
+        updateProgressUI()
+    }
+
+    private fun checkPurchaseState() {
+        val userId = auth.currentUser?.uid ?: return
+        lifecycleScope.launch {
+            try {
+                val purchaseDoc = db.collection("users")
+                    .document(userId)
+                    .collection("purchased_courses")
+                    .document(course.id.toString())
+                    .get()
+                    .await()
+
+                if (purchaseDoc.exists()) {
+                    course.isPurchased = true
+                    refreshLessons()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
     companion object {
         private const val ARG_COURSE = "course"
+        
+        private var unlockCallback: (() -> Unit)? = null
+        
+        fun setUnlockCallback(callback: () -> Unit) {
+            unlockCallback = callback
+        }
         
         fun newInstance(course: Course) = CourseDetailsFragment().apply {
             arguments = Bundle().apply {
