@@ -72,10 +72,8 @@ class PaymentFragment : Fragment() {
         bottomNav.visibility = View.VISIBLE
         Toast.makeText(requireContext(), "Благодарим за покупку", Toast.LENGTH_SHORT).show()
         
-        // Update local database
         CourseRepositoryLocal.getCourses().find { it.id == courseId }?.isPurchased = true
 
-        // Save purchase state to Firestore
         val userId = auth.currentUser?.uid ?: return
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -92,7 +90,6 @@ class PaymentFragment : Fragment() {
             }
         }
 
-        // Set fragment result
         setFragmentResult("payment_result", Bundle().apply {
             putBoolean("unlockLessons", true)
         })

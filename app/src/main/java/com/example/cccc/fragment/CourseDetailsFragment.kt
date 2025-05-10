@@ -88,7 +88,6 @@ class CourseDetailsFragment : Fragment() {
         updateUI()
         setupClickListeners()
 
-        // Listen for payment result
         setFragmentResultListener("payment_result") { _, bundle ->
             if (bundle.getBoolean("unlockLessons", false)) {
                 Log.d("CourseDetailsFragment", "Received payment result: true")
@@ -129,12 +128,10 @@ class CourseDetailsFragment : Fragment() {
         val userId = auth.currentUser?.uid ?: return
         val courseId = course.id
         
-        // Отменяем предыдущий job, если он существует
         loadProgressJob?.cancel()
         
         loadProgressJob = lifecycleScope.launch {
             try {
-                // Получаем прогресс из ProgressService
                 val progress = progressService.getCourseProgress(userId, courseId.toString())
                 progress.collect { progresses ->
                     completedLessons.clear()
@@ -147,7 +144,6 @@ class CourseDetailsFragment : Fragment() {
                     lessonAdapter.notifyDataSetChanged()
                 }
             } catch (e: Exception) {
-                // Игнорируем ошибку, если фрагмент уже уничтожен
                 if (isAdded) {
                     e.printStackTrace()
                 }
@@ -292,7 +288,6 @@ class CourseDetailsFragment : Fragment() {
 
             showToast("Certificate saved to Downloads")
 
-            // Обновляем медиа-хранилище, чтобы файл сразу появился в галерее
             MediaScannerConnection.scanFile(
                 requireContext(),
                 arrayOf(file.absolutePath),
@@ -311,7 +306,6 @@ class CourseDetailsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Отменяем job при уничтожении view
         loadProgressJob?.cancel()
         loadProgressJob = null
         _binding = null
@@ -325,10 +319,8 @@ class CourseDetailsFragment : Fragment() {
         lessonAdapter.submitList(updatedLessons)
         binding.buyButton.visibility = View.GONE
 
-        // Force update the UI
         lessonAdapter.notifyDataSetChanged()
 
-        // Логируем обновление UI
         Log.d("CourseDetailsFragment", "Lessons unlocked and UI refreshed")
     }
 
